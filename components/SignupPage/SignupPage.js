@@ -15,7 +15,9 @@ import React, {
 import {COLOR} from '../../styles/colors';
 import {RadioButton} from 'react-native-paper';
 import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {authRegister} from './actions';
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 265) / 527);
@@ -30,14 +32,27 @@ const loginValidationSchema = yup.object().shape({
     .string()
     .min(8, ({min}) => `Password must be at least ${min} characters`)
     .required('Password is required'),
-  surname: yup.string().required('Surname is required'),
   name: yup.string().required('Name is required'),
-  phone: yup.string().required('Phone number is required'),
-  gender: yup.string().required('Gender is required'),
+  gender: yup.string(),
+  birthday: yup.string(),
 });
 
 const SignupPage = ({navigation}) => {
+  const dispatch = useDispatch();
+  const RegisterResult = useSelector(state => state.registerResult);
   const [modalVisible, setModalVisible] = useState(false);
+  const [err, setErr] = useState('');
+
+  useEffect(() => {
+    if (RegisterResult) {
+      if (RegisterResult.success) {
+        navigation.navigate('Login');
+      } else {
+        setErr('Có lỗi xảy ra, vui lòng thử lại');
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [RegisterResult]);
 
   return (
     <ScrollView style={styles.container}>
@@ -51,12 +66,12 @@ const SignupPage = ({navigation}) => {
           initialValues={{
             email: '',
             password: '',
-            dob: getFormatedDate(new Date(), 'YYYY/MM/DD'),
-            gender: '',
-            phone: '',
+            name: '',
+            birthday: getFormatedDate(new Date(), 'YYYY-MM-DD'),
+            gender: '1',
           }}
           validationSchema={loginValidationSchema}
-          onSubmit={values => console.log(values)}>
+          onSubmit={values => dispatch(authRegister(values))}>
           {({
             handleChange,
             handleBlur,
@@ -67,118 +82,6 @@ const SignupPage = ({navigation}) => {
             isValid,
           }) => (
             <View>
-              {/* Họ, Tên, ngày sinh, giới tính, sdt, mk, email */}
-              <TextInput
-                name="surname"
-                onChangeText={handleChange('surname')}
-                onBlur={handleBlur('surname')}
-                value={values.surname}
-                placeholder="Họ"
-                placeholderTextColor={COLOR.white2}
-                style={styles.input}
-              />
-              {errors.surname && (
-                <Text style={{fontSize: 10, color: COLOR.red}}>
-                  {errors.surname}
-                </Text>
-              )}
-              <TextInput
-                name="name"
-                onChangeText={handleChange('name')}
-                onBlur={handleBlur('name')}
-                value={values.name}
-                placeholder="Tên"
-                placeholderTextColor={COLOR.white2}
-                style={styles.input}
-              />
-              {errors.name && (
-                <Text style={{fontSize: 10, color: COLOR.red}}>
-                  {errors.name}
-                </Text>
-              )}
-              <RadioButton.Group
-                onValueChange={handleChange('gender')}
-                value={values.gender}>
-                <View style={styles.radio}>
-                  <Text style={styles.radioBtnText}>Giới tính</Text>
-                  <View style={styles.radioBtn}>
-                    <RadioButton
-                      value="male"
-                      uncheckedColor={COLOR.white2}
-                      color={COLOR.active}
-                    />
-                    <Text style={styles.radioBtnText}>Nam</Text>
-                  </View>
-                  <View style={styles.radioBtn}>
-                    <RadioButton
-                      value="female"
-                      uncheckedColor={COLOR.white2}
-                      color={COLOR.active}
-                    />
-                    <Text style={styles.radioBtnText}>Nữ</Text>
-                  </View>
-                </View>
-              </RadioButton.Group>
-              {errors.gender && (
-                <Text style={{fontSize: 10, color: COLOR.red}}>
-                  {errors.gender}
-                </Text>
-              )}
-              <TouchableHighlight onPress={() => setModalVisible(true)}>
-                <Text
-                  name="dob"
-                  placeholderTextColor={COLOR.white2}
-                  style={styles.input}>
-                  Ngày sinh: {values.dob}
-                </Text>
-              </TouchableHighlight>
-              {errors.dob && (
-                <Text style={{fontSize: 10, color: COLOR.red}}>
-                  {errors.dob}
-                </Text>
-              )}
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.modalContent}>
-                  <DatePicker
-                    options={{
-                      backgroundColor: COLOR.black,
-                      textHeaderColor: COLOR.white,
-                      textDefaultColor: COLOR.white2,
-                      selectedTextColor: COLOR.white,
-                      mainColor: COLOR.blue,
-                      textSecondaryColor: COLOR.white,
-                    }}
-                    mode="calendar"
-                    minuteInterval={30}
-                    style={{borderRadius: 10}}
-                    current={values.dob}
-                    onDateChange={date => {
-                      setFieldValue('dob', date);
-                      setModalVisible(false);
-                    }}
-                  />
-                </View>
-              </Modal>
-              <TextInput
-                name="phone"
-                onChangeText={handleChange('phone')}
-                onBlur={handleBlur('phone')}
-                value={values.phone}
-                placeholder="Số điện thoại"
-                placeholderTextColor={COLOR.white2}
-                style={styles.input}
-              />
-              {errors.phone && (
-                <Text style={{fontSize: 10, color: COLOR.red}}>
-                  {errors.phone}
-                </Text>
-              )}
               <TextInput
                 name="email"
                 onChangeText={handleChange('email')}
@@ -209,6 +112,90 @@ const SignupPage = ({navigation}) => {
                   {errors.password}
                 </Text>
               )}
+              <TextInput
+                name="name"
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+                value={values.name}
+                placeholder="Họ Tên"
+                placeholderTextColor={COLOR.white2}
+                style={styles.input}
+              />
+              {errors.name && (
+                <Text style={{fontSize: 10, color: COLOR.red}}>
+                  {errors.name}
+                </Text>
+              )}
+              <RadioButton.Group
+                onValueChange={handleChange('gender')}
+                value={values.gender}>
+                <View style={styles.radio}>
+                  <Text style={styles.radioBtnText}>Giới tính</Text>
+                  <View style={styles.radioBtn}>
+                    <RadioButton
+                      value="1"
+                      uncheckedColor={COLOR.white2}
+                      color={COLOR.active}
+                    />
+                    <Text style={styles.radioBtnText}>Nam</Text>
+                  </View>
+                  <View style={styles.radioBtn}>
+                    <RadioButton
+                      value="0"
+                      uncheckedColor={COLOR.white2}
+                      color={COLOR.active}
+                    />
+                    <Text style={styles.radioBtnText}>Nữ</Text>
+                  </View>
+                </View>
+              </RadioButton.Group>
+              {errors.gender && (
+                <Text style={{fontSize: 10, color: COLOR.red}}>
+                  {errors.gender}
+                </Text>
+              )}
+              <TouchableHighlight onPress={() => setModalVisible(true)}>
+                <Text
+                  name="birthday"
+                  placeholderTextColor={COLOR.white2}
+                  style={styles.input}>
+                  Ngày sinh: {values.birthday}
+                </Text>
+              </TouchableHighlight>
+              {errors.birthday && (
+                <Text style={{fontSize: 10, color: COLOR.red}}>
+                  {errors.birthday}
+                </Text>
+              )}
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.modalContent}>
+                  <DatePicker
+                    options={{
+                      backgroundColor: COLOR.black,
+                      textHeaderColor: COLOR.white,
+                      textDefaultColor: COLOR.white2,
+                      selectedTextColor: COLOR.white,
+                      mainColor: COLOR.blue,
+                      textSecondaryColor: COLOR.white,
+                    }}
+                    mode="calendar"
+                    minuteInterval={30}
+                    style={{borderRadius: 10}}
+                    current={values.birthday}
+                    onDateChange={date => {
+                      setFieldValue('birthday', date);
+                      setModalVisible(false);
+                    }}
+                  />
+                </View>
+              </Modal>
+              <Text>{err ? err : ''}</Text>
               <View style={styles.button}>
                 <Button
                   onPress={handleSubmit}

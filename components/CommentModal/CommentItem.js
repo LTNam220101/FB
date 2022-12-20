@@ -37,9 +37,9 @@ const CommentItem = ({
         </View>
         <View style={styles.bottom}>
           <View style={styles.like}>
-            <Text>{time}</Text>
-            <Text>Thích</Text>
-            <Text>Phản hồi</Text>
+            <Text style={styles.like_item}>{time}</Text>
+            <Text style={styles.like_item}>Thích</Text>
+            <Text style={styles.like_item}>Phản hồi</Text>
           </View>
           {likes > 0 && (
             <View style={styles.likes}>
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 5,
     marginBottom: 10,
+    color: COLOR.black,
   },
   like: {
     width: 160,
@@ -105,6 +106,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginRight: 20,
     gap: 10,
+  },
+  like_item: {
     color: COLOR.black,
   },
   likes: {

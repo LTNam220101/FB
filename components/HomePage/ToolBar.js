@@ -10,10 +10,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import CreatePostModal from './CreatePostModal';
 import Avatar from '../Avatar';
 import {COLOR} from './../../styles/colors';
+import {useSelector} from 'react-redux';
 
 const ToolBar = () => {
+  const getAvatarResult = useSelector(state => state.getAvatarResult);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const imageBlob =
+    getAvatarResult && getAvatarResult.response
+      ? getAvatarResult.response.blob()
+      : undefined;
+  const imageObjectURL = imageBlob ? URL.createObjectURL(imageBlob) : undefined;
+  console.log(imageObjectURL);
   return (
     <View style={styles.view}>
       <CreatePostModal
@@ -28,9 +35,9 @@ const ToolBar = () => {
         activeOpacity={0.05}>
         <Text style={{color: COLOR.black}}>Ngày hôm nay của bạn thế nào?</Text>
       </TouchableHighlight>
-      <TouchableOpacity style={styles.button}>
+      {/* <TouchableOpacity style={styles.button}>
         <Icon name="images-outline" size={25} color={COLOR.green} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
