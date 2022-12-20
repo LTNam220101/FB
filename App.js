@@ -1,11 +1,12 @@
 import React, {StatusBar, StyleSheet} from 'react-native';
 import {useState} from 'react';
+import {Provider} from 'react-redux';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {COLOR} from './styles/colors';
+import {store} from './store';
 import SplashScreen from './components/SplashScreen/SplashScreen';
 import AppBar from './components/AppBar';
 import HomePage from './components/HomePage/HomePage';
@@ -13,6 +14,7 @@ import ProfilePage from './components/ProfilePage/ProfilePage';
 import NotiPage from './components/NotiPage/NotiPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import SignupPage from './components/SignupPage/SignupPage';
+import {COLOR} from './styles/colors';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -20,13 +22,12 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   const [openAppBar, setOpenAppBar] = useState(1);
   const [isSignedIn, setIsSignIn] = useState(true);
-
   if (isSignedIn === undefined) {
     return <SplashScreen />;
   }
 
   return (
-    <>
+    <Provider store={store}>
       <StatusBar
         backgroundColor={isSignedIn ? COLOR.white : COLOR.blueBackgroundLogin}
         barStyle={isSignedIn ? 'dark-content' : 'light-content'}
@@ -61,7 +62,10 @@ const App = () => {
               })}>
               <Tab.Screen name="Home" component={HomePage} />
               <Tab.Screen name="Profile" component={ProfilePage} />
-              <Tab.Screen name="Noti" component={NotiPage} />
+              <Tab.Screen
+                name="Noti"
+                children={() => <NotiPage setIsSignIn={setIsSignIn} />}
+              />
             </Tab.Navigator>
           </NavigationContainer>
         </SafeAreaView>
@@ -84,7 +88,7 @@ const App = () => {
           </Stack.Navigator>
         </NavigationContainer>
       )}
-    </>
+    </Provider>
   );
 };
 

@@ -8,13 +8,24 @@ import React, {
 import Icon from 'react-native-vector-icons/Feather';
 import NotiItem from './NotiItem';
 import {COLOR} from '../../styles/colors';
+import {useDispatch} from 'react-redux';
+import {authLogout} from '../LoginPage/actions';
+import {AUTH_LOGIN_CLEAR} from '../LoginPage/reducers';
 
-const NotiPage = () => {
+const NotiPage = ({setIsSignIn}) => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(authLogout());
+    dispatch({type: AUTH_LOGIN_CLEAR});
+    setIsSignIn(false);
+  };
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: COLOR.white}}>
       <View style={styles.header}>
         <Text style={styles.text}>Thông báo</Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleLogout}>
           <Icon name="search" size={20} color={COLOR.black} />
         </TouchableOpacity>
       </View>

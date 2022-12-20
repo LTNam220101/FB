@@ -10,6 +10,8 @@ import React, {
 } from 'react-native';
 import CommentsModal from '../CommentModal/CommentsModal';
 import {COLOR} from '../../styles/colors';
+import Swiper from 'react-native-swiper';
+import VideoPlayer from 'react-native-video-player';
 
 const News = ({
   avatar,
@@ -64,6 +66,23 @@ const News = ({
         activeOpacity={0.05}>
         <Text style={styles.content}>{content}</Text>
       </TouchableHighlight>
+      {images && (
+        <Swiper loop={false}>
+          {images.map((image, index) => (
+            <Image source={image} style={styles.imgContent} key={index} />
+          ))}
+        </Swiper>
+      )}
+      {video && (
+        <VideoPlayer
+          // video={{
+          //   uri: 'https://drive.google.com/file/d/1eJhHt1Jug1fkODmgEW7-uVd825WcEunt/view?usp=sharing',
+          // }}
+          video={video}
+          videoWidth={1600}
+          videoHeight={900}
+        />
+      )}
       <TouchableHighlight
         style={styles.like}
         onPress={() => setModalVisible(true)}
@@ -144,6 +163,14 @@ const styles = StyleSheet.create({
     paddingLeft: 11,
     paddingRight: 11,
     color: COLOR.black,
+  },
+  imgContent: {
+    width: '100%',
+    flex: 1,
+  },
+  backgroundVideo: {
+    width: '100%',
+    flex: 1,
   },
   like: {
     color: '#333',

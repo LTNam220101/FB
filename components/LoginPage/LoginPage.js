@@ -9,7 +9,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import React, {LogBox} from 'react-native';
+import {authLogin} from './actions';
 import {COLOR} from '../../styles/colors';
 
 const dimensions = Dimensions.get('window');
@@ -32,6 +35,26 @@ LogBox.ignoreLogs([
 ]);
 
 const LoginPage = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  const LoginResult = useSelector(state => state.loginResult);
+
+  const [err, setErr] = useState('');
+
+  useEffect(() => {
+    if (LoginResult) {
+      if (LoginResult.success) {
+        route.params.setIsSignIn(true);
+      } else {
+        setErr('Có lỗi xảy ra, vui lòng thử lại');
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [LoginResult]);
+
+  const handleLogin = async values => {
+    dispatch(authLogin(values));
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -44,8 +67,7 @@ const LoginPage = ({navigation, route}) => {
           initialValues={{email: '', password: ''}}
           validationSchema={loginValidationSchema}
           onSubmit={values => {
-            console.log(values);
-            route.params.setIsSignIn(true);
+            handleLogin(values);
           }}>
           {({
             handleChange,
@@ -86,6 +108,7 @@ const LoginPage = ({navigation, route}) => {
                   {errors.password}
                 </Text>
               )}
+              <Text>{err ? err : ''}</Text>
               <View style={styles.button}>
                 <Button
                   onPress={handleSubmit}

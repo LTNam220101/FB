@@ -1,7 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {FlatList, StyleSheet, View} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {useEffect} from 'react';
 import ToolBar from './ToolBar';
 import News from './News';
-import {COLOR} from '../../styles/colors';
+import {getAvatar} from '../../global-actions/getAvatar/actions';
+import Video from 'react-native-video';
 
 export const dataHomePage = [
   {
@@ -13,6 +17,12 @@ export const dataHomePage = [
     likes: 20,
     comments: 10,
     id: 1,
+    images: [
+      require('../../assets/image1.jpg'),
+      require('../../assets/image2.jpg'),
+      require('../../assets/image3.jpg'),
+      require('../../assets/image4.jpg'),
+    ],
   },
   {
     avatar: '../../assets/avatar.jpg',
@@ -23,6 +33,11 @@ export const dataHomePage = [
     likes: 20,
     comments: 10,
     id: 2,
+    images: [
+      require('../../assets/image1.jpg'),
+      require('../../assets/image2.jpg'),
+      require('../../assets/image3.jpg'),
+    ],
   },
   {
     avatar: '../../assets/avatar.jpg',
@@ -33,6 +48,10 @@ export const dataHomePage = [
     likes: 20,
     comments: 10,
     id: 3,
+    images: [
+      require('../../assets/image1.jpg'),
+      require('../../assets/image2.jpg'),
+    ],
   },
   {
     avatar: '../../assets/avatar.jpg',
@@ -43,6 +62,7 @@ export const dataHomePage = [
     likes: 20,
     comments: 10,
     id: 4,
+    images: [require('../../assets/image1.jpg')],
   },
   {
     avatar: '../../assets/avatar.jpg',
@@ -53,6 +73,7 @@ export const dataHomePage = [
     likes: 20,
     comments: 10,
     id: 5,
+    video: require('../../assets/bruh.mp4'),
   },
   {
     avatar: '../../assets/avatar.jpg',
@@ -67,6 +88,12 @@ export const dataHomePage = [
 ];
 
 const HomePage = () => {
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getAvatar());
+  // }, []);
+
   const renderItem = ({item}) => (
     <News
       avatar={require('../../assets/avatar.jpg')}
@@ -77,6 +104,8 @@ const HomePage = () => {
       likes={item.likes}
       comments={item.comments}
       id={item.id}
+      images={item.images}
+      video={item.video}
     />
   );
   return (
