@@ -2,6 +2,7 @@ import React, {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {COLOR} from '../styles/colors';
 import Icon from 'react-native-vector-icons/Feather';
 import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
+import {SearchBar} from 'react-native-elements';
 
 const AppBar = () => {
   return (
