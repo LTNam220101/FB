@@ -2,14 +2,24 @@ import React, {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {COLOR} from '../styles/colors';
 import Icon from 'react-native-vector-icons/Feather';
 import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
-import {SearchBar} from 'react-native-elements';
+import SearchScreen from './SearchPage/SearchScreen';
+import {useState} from 'react';
 
 const AppBar = () => {
+
+  const [searchVisible, setSearchVisible] = useState(false);
+
   return (
     <View style={styles.container}>
+      <SearchScreen
+        searchVisible={searchVisible}
+        setSearchVisible={setSearchVisible}
+      />
       <Text style={styles.text}>facebook</Text>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+        style={styles.button}
+        onPress={() => setSearchVisible(true)}>
           <Icon name="search" size={29} color={COLOR.black} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>

@@ -1,10 +1,33 @@
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import React from 'react-native';
+import React, {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {COLOR} from '../../styles/colors';
 
-const SearchItem = ({avatar, content, notiNum}) => {
+const SearchItem = ({avatar, content, notiContent}) => {
+
     return (
         <TouchableHighlight>
+          <View style={[styles.wrapper]}>
+            <Image source={avatar} style={styles.img} />
+            <View style={styles.content}>
+              <Text numberOfLines={2} style={styles.fullContent}>
+                <Text style={styles.name}>{content} </Text>
+                <Text>{"\n"}</Text>
+                <Text>{notiContent}</Text>
+              </Text>
+            </View>
 
+            <TouchableOpacity>
+              <Icon name="close" style={styles.icon} />
+            </TouchableOpacity>
+
+          </View>
         </TouchableHighlight>
     );
 };
@@ -12,15 +35,19 @@ const SearchItem = ({avatar, content, notiNum}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
-    backgroundColor: COLOR.blueBackground,
     padding: 10,
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: COLOR.grayBorder
   },
-  read: {
-    backgroundColor: COLOR.white,
+  icon: {
+    marginTop:4,
+    color: COLOR.grayTime,
+    fontSize:30
   },
   img: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 25,
   },
   content: {
@@ -34,10 +61,8 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: 'bold',
     color: COLOR.black,
-  },
-  time: {
-    color: COLOR.grayTime,
-  },
+    fontSize: 15
+  }
 });
 
 export default SearchItem;
