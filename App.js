@@ -1,5 +1,5 @@
 import React, {StatusBar, StyleSheet} from 'react-native';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -15,6 +15,9 @@ import NotiPage from './components/NotiPage/NotiPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import SignupPage from './components/SignupPage/SignupPage';
 import {COLOR} from './styles/colors';
+import SettingPage from './components/SettingPage/SettingPage';
+import MessengerHomePage from './components/MessengerPage/MessengerHomePage';
+import ChatScreen from './components/ChatScreen/ChatScreen';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -22,6 +25,14 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   const [openAppBar, setOpenAppBar] = useState(1);
   const [isSignedIn, setIsSignIn] = useState(true);
+  const [state, setState] = useState(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsSignIn(true);
+    }, 2000);
+  }, []);
+
   if (isSignedIn === undefined) {
     return <SplashScreen />;
   }
@@ -30,44 +41,61 @@ const App = () => {
     <Provider store={store}>
       <StatusBar
         backgroundColor={isSignedIn ? COLOR.white : COLOR.blueBackgroundLogin}
-        barStyle={isSignedIn ? 'dark-content' : 'light-content'}
+        barStyle={isSignedIn ? 'dark-content' : 'dark-content'}
       />
       {isSignedIn ? (
         <SafeAreaView style={styles.container}>
-          {openAppBar && <AppBar />}
-          <NavigationContainer>
-            <Tab.Navigator
-              screenOptions={({route}) => ({
-                tabBarIcon: ({focused, color}) => {
-                  let iconName;
-                  if (route.name === 'Home') {
-                    iconName = focused ? 'home' : 'home-outline';
-                  }
-                  if (route.name === 'Profile') {
-                    iconName = focused
-                      ? 'person-circle'
-                      : 'person-circle-outline';
-                  } else if (route.name === 'Noti') {
-                    iconName = focused
-                      ? 'notifications'
-                      : 'notifications-outline';
-                  }
-                  // You can return any component that you like here!
-                  return <Icon name={iconName} size={25} color={color} />;
-                },
-                tabBarActiveTintColor: COLOR.active,
-                tabBarInactiveTintColor: COLOR.inactive,
-                tabBarShowIcon: true,
-                tabBarShowLabel: false,
-              })}>
-              <Tab.Screen name="Home" component={HomePage} />
-              <Tab.Screen name="Profile" component={ProfilePage} />
-              <Tab.Screen
-                name="Noti"
-                children={() => <NotiPage setIsSignIn={setIsSignIn} />}
-              />
-            </Tab.Navigator>
-          </NavigationContainer>
+          {openAppBar && <AppBar setState={setState} />}
+          {state === 0 ? (
+            <NavigationContainer>
+              <Tab.Navigator
+                screenOptions={({route}) => ({
+                  tabBarIcon: ({focused, color}) => {
+                    let iconName;
+                    if (route.name === 'Home') {
+                      iconName = focused ? 'home' : 'home-outline';
+                    }
+                    if (route.name === 'Profile') {
+                      iconName = focused
+                        ? 'person-circle'
+                        : 'person-circle-outline';
+                    }
+                    if (route.name === 'Noti') {
+                      iconName = focused
+                        ? 'notifications'
+                        : 'notifications-outline';
+                    }
+                    if (route.name === 'Setting') {
+                      iconName = focused ? 'menu' : 'menu-outline';
+                    }
+                    // You can return any component that you like here!
+                    return <Icon name={iconName} size={25} color={color} />;
+                  },
+                  tabBarActiveTintColor: COLOR.active,
+                  tabBarInactiveTintColor: COLOR.inactive,
+                  tabBarShowIcon: true,
+                  tabBarShowLabel: false,
+                })}>
+                <Tab.Screen name="Home" component={HomePage} />
+                <Tab.Screen name="Profile" component={ProfilePage} />
+                <Tab.Screen name="Noti" component={NotiPage} />
+                <Tab.Screen
+                  name="Setting"
+                  children={() => <SettingPage setIsSignIn={setIsSignIn} />}
+                />
+              </Tab.Navigator>
+            </NavigationContainer>
+          ) : (
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false,
+                }}>
+                <Stack.Screen name="Messenger" component={MessengerHomePage} />
+                <Stack.Screen name="Chat" component={ChatScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          )}
         </SafeAreaView>
       ) : (
         <NavigationContainer>

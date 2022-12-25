@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import { put, takeLatest, call } from "redux-saga/effects";
 import { Request } from "../../../interfaces";
-import { GET_AVATAR } from "./../../actions";
+import { LIKE_POST } from "../../actions";
 
-const avatarUrl = `/user/get-avatar-original`;
+const likePostUrl = `/posts/like-post/`;
 
-function getAvatar() {
-  return axios.get(avatarUrl);
+function likePost() {
+  return axios.put(likePostUrl);
 }
 
-function* doGetAvatar(request: Request<Record<string, unknown>>): any {
+function* doLikePost(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(getAvatar);
+    const response = yield call(likePost);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doGetAvatar(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchGetAvatar() {
-  yield takeLatest(GET_AVATAR, doGetAvatar);
+export default function* watchLikePost() {
+  yield takeLatest(LIKE_POST, doLikePost);
 }

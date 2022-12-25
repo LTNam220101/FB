@@ -3,9 +3,8 @@ import React, {FlatList, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useEffect} from 'react';
 import ToolBar from './ToolBar';
-import News from './News';
+import News from '../News/News';
 import {getAvatar} from '../../global-actions/getAvatar/actions';
-import Video from 'react-native-video';
 
 export const dataHomePage = [
   {

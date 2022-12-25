@@ -22,7 +22,7 @@ const AppBar = () => {
         onPress={() => setSearchVisible(true)}>
           <Icon name="search" size={29} color={COLOR.black} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => setState(2)}>
           <IconM name="facebook-messenger" size={29} color={COLOR.black} />
         </TouchableOpacity>
       </View>

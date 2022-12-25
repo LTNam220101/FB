@@ -1,5 +1,4 @@
 import {useRef, useState} from 'react';
-import axios from 'axios';
 import React, {
   Alert,
   Button,
@@ -12,35 +11,31 @@ import React, {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import Swiper from 'react-native-swiper';
 import VideoPlayer from 'react-native-video-player';
 import {requestCameraPermission} from './../../utils/requestPermisssion/requestCameraPermission';
 import {COLOR} from '../../styles/colors';
+import {createPost} from './actions';
 
 const CreatePostModal = ({modalVisible, setModalVisible}) => {
-  const LoginResult = useSelector(state => state.loginResult);
+  const dispatch = useDispatch();
+  const createPostResult = useSelector(state => state.createPostResult);
+  const [text, setText] = useState(undefined);
   const [photos, setPhotos] = useState(undefined);
   const [video, setVideo] = useState(undefined);
   const [index, setIndex] = useState(0);
-
+  console.log(createPostResult);
   const ref = useRef();
-  const handlePress = async () => {
-    const formData = new FormData();
-    formData.append('content', '123456');
-    // formData.append('images', photo);
-    const a = await axios.post(
-      'http://192.168.8.212:8000/posts/create',
-      formData,
-      {
-        header: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-    );
-    console.log(a);
+  const handlePress = () => {
+    const payload = {
+      images: photos,
+      video: video,
+      content: text,
+    };
+    dispatch(createPost(payload));
   };
 
   const openImagePicker = () => {
@@ -124,7 +119,11 @@ const CreatePostModal = ({modalVisible, setModalVisible}) => {
             <Icon name={'arrow-back-outline'} size={30} color={COLOR.black} />
           </TouchableOpacity>
           <Text style={styles.text}>Tạo bài viết</Text>
-          <Button title="ĐĂNG" onPress={handlePress} />
+          <Button
+            title="ĐĂNG"
+            onPress={handlePress}
+            disabled={!(text || photos || video)}
+          />
         </View>
         <View style={styles.user}>
           <Image
@@ -141,6 +140,8 @@ const CreatePostModal = ({modalVisible, setModalVisible}) => {
             cursorColor={COLOR.blue}
             placeholder={'Bạn đang nghĩ gì?'}
             placeholderTextColor={COLOR.black}
+            value={text}
+            onChangeText={text => setText(text)}
           />
         </Pressable>
         {video && (
@@ -188,23 +189,8 @@ const CreatePostModal = ({modalVisible, setModalVisible}) => {
             <Icon name="images-outline" size={25} color={COLOR.green} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={openVideoPicker}>
-            <Icon name="videocam-outline" size={25} color={COLOR.green} />
+            <Icon name="videocam-outline" size={25} color={COLOR.red} />
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.button}>
-            <Icon
-              name="happy-outline"
-              size={25}
-              color={COLOR.red}
-              omPress={() => setShowEmoji(true)}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Icon
-              name="ellipsis-horizontal-circle-sharp"
-              size={25}
-              color={COLOR.inactive}
-            />
-          </TouchableOpacity> */}
         </View>
       </View>
     </Modal>

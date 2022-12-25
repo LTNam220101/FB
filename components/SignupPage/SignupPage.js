@@ -9,6 +9,7 @@ import React, {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableHighlight,
   View,
 } from 'react-native';
@@ -18,6 +19,7 @@ import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {authRegister} from './actions';
+import {AUTH_REGISTER_CLEAR} from './reducers';
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 265) / 527);
@@ -30,7 +32,10 @@ const loginValidationSchema = yup.object().shape({
     .required('Email Address is Required'),
   password: yup
     .string()
-    .min(8, ({min}) => `Password must be at least ${min} characters`)
+    .matches(
+      '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$',
+      'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character',
+    )
     .required('Password is required'),
   name: yup.string().required('Name is required'),
   gender: yup.string(),
@@ -46,11 +51,17 @@ const SignupPage = ({navigation}) => {
   useEffect(() => {
     if (RegisterResult) {
       if (RegisterResult.success) {
+        ToastAndroid.show(
+          'Tin nhắn xác nhận đã được gửi về mail của bạn. Vui lòng xác nhận tài khoản và đăng nhập',
+          ToastAndroid.SHORT,
+        );
         navigation.navigate('Login');
       } else {
         setErr('Có lỗi xảy ra, vui lòng thử lại');
       }
     }
+    return () => dispatch({type: AUTH_REGISTER_CLEAR});
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [RegisterResult]);
 
@@ -189,7 +200,7 @@ const SignupPage = ({navigation}) => {
                     style={{borderRadius: 10}}
                     current={values.birthday}
                     onDateChange={date => {
-                      setFieldValue('birthday', date);
+                      setFieldValue('birthday', date.replaceAll('/', '-'));
                       setModalVisible(false);
                     }}
                   />

@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import { put, takeLatest, call } from "redux-saga/effects";
 import { Request } from "../../../interfaces";
-import { GET_AVATAR } from "./../../actions";
+import { DELETE_POST } from "../../actions";
 
-const avatarUrl = `/user/get-avatar-original`;
+const deletePostUrl = `/posts/delete-post/37`;
 
-function getAvatar() {
-  return axios.get(avatarUrl);
+function deletePost() {
+  return axios.delete(deletePostUrl);
 }
 
-function* doGetAvatar(request: Request<Record<string, unknown>>): any {
+function* doDeletePost(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(getAvatar);
+    const response = yield call(deletePost);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doGetAvatar(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchGetAvatar() {
-  yield takeLatest(GET_AVATAR, doGetAvatar);
+export default function* watchDeletePost() {
+  yield takeLatest(DELETE_POST, doDeletePost);
 }

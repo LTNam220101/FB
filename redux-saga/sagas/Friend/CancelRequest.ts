@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
-import {AUTH_LOGIN} from './../../actions';
+import {CANCEL_REQUEST} from '../../actions';
 
-const signupUrl = `/auth/login`;
+const cancelRequestUrl = `/friends/cancel-request`;
 
-function login(payload: Record<string, unknown>) {
-  return axios.post(signupUrl, payload);
+function cancelRequest() {
+  return axios.post(cancelRequestUrl);
 }
 
-function* doLogin(request: Request<Record<string, unknown>>): any {
+function* doCancelRequest(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(login, request.payload!);
+    const response = yield call(cancelRequest);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doLogin(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchLogin() {
-  yield takeLatest(AUTH_LOGIN, doLogin);
+export default function* watchCancelRequest() {
+  yield takeLatest(CANCEL_REQUEST, doCancelRequest);
 }

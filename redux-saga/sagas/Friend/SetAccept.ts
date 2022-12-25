@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import { put, takeLatest, call } from "redux-saga/effects";
 import { Request } from "../../../interfaces";
-import { GET_AVATAR } from "./../../actions";
+import { SET_ACCEPT } from "../../actions";
 
-const avatarUrl = `/user/get-avatar-original`;
+const setAcceptUrl = `/friends/set-accept-friend`;
 
-function getAvatar() {
-  return axios.get(avatarUrl);
+function setAccept() {
+  return axios.post(setAcceptUrl);
 }
 
-function* doGetAvatar(request: Request<Record<string, unknown>>): any {
+function* doSetAccept(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(getAvatar);
+    const response = yield call(setAccept);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doGetAvatar(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchGetAvatar() {
-  yield takeLatest(GET_AVATAR, doGetAvatar);
+export default function* watchSetAccept() {
+  yield takeLatest(SET_ACCEPT, doSetAccept);
 }
