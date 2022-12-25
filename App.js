@@ -17,7 +17,7 @@ import SignupPage from './components/SignupPage/SignupPage';
 import {COLOR} from './styles/colors';
 import SettingPage from './components/SettingPage/SettingPage';
 import MessengerHomePage from './components/MessengerPage/MessengerHomePage';
-import ChatScreen from './components/ChatScreen/ChatScreen';
+import SearchScreen from './components/SearchPage/SearchScreen';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -85,14 +85,33 @@ const App = () => {
                 />
               </Tab.Navigator>
             </NavigationContainer>
+          ) : state === 1 ? (
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false,
+                }}>
+                <Stack.Screen
+                  name="Search"
+                  children={() => <SearchScreen setState={setState} />}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
           ) : (
             <NavigationContainer>
               <Stack.Navigator
                 screenOptions={{
                   headerShown: false,
                 }}>
-                <Stack.Screen name="Messenger" component={MessengerHomePage} />
-                <Stack.Screen name="Chat" component={ChatScreen} />
+                <Stack.Screen
+                  name="Messenger"
+                  children={({navigation}) => (
+                    <MessengerHomePage
+                      setState={setState}
+                      navigation={navigation}
+                    />
+                  )}
+                />
               </Stack.Navigator>
             </NavigationContainer>
           )}

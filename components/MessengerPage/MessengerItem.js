@@ -2,10 +2,9 @@ import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {COLOR} from '../../styles/colors';
 
-const MessengerItem = ({item, navigation}) => {
+const MessengerItem = ({item, setOpenChat}) => {
   return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Chat', {name: 'Jane'})}>
+    <TouchableOpacity onPress={() => setOpenChat(true)}>
       <View style={styles.container}>
         <View style={styles.bgAvatar}>
           <Image source={{uri: item.avatar}} style={styles.avatar} />

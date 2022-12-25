@@ -1,7 +1,17 @@
-import {FlatList, View, Text, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import {
+  FlatList,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import MessengerItem from './MessengerItem';
 import {COLOR} from '../../styles/colors';
+import ChatScreen from '../ChatScreen/ChatScreen';
+
 const data = [
   {
     id: 1,
@@ -79,23 +89,65 @@ const data = [
     description:
       'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.',
   },
+  {
+    id: 11,
+    avatar: 'https://data.whicdn.com/images/148584794/large.jpg',
+    name: 'Crush số 10',
+    description:
+      'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.',
+  },
+  {
+    id: 12,
+    avatar: 'https://data.whicdn.com/images/148584794/large.jpg',
+    name: 'Crush số 10',
+    description:
+      'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.',
+  },
+  {
+    id: 13,
+    avatar: 'https://data.whicdn.com/images/148584794/large.jpg',
+    name: 'Crush số 10',
+    description:
+      'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.',
+  },
+  {
+    id: 14,
+    avatar: 'https://data.whicdn.com/images/148584794/large.jpg',
+    name: 'Crush số 10',
+    description:
+      'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.',
+  },
+  {
+    id: 15,
+    avatar: 'https://data.whicdn.com/images/148584794/large.jpg',
+    name: 'Crush số 10',
+    description:
+      'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.',
+  },
 ];
 
-const MessengerHomePage = ({navigation}) => {
+const MessengerHomePage = ({navigation, setState}) => {
+  const [openChat, setOpenChat] = useState(false);
   return (
-    <View style={styles.wrapper}>
-      <View>
-        <Text style={styles.title}>Messenger</Text>
+    <Modal animationType="fade" transparent={true}>
+      {openChat && <ChatScreen setOpenChat={setOpenChat} />}
+      <View style={styles.wrapper}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.button} onPress={() => setState(0)}>
+            <Icon name="arrow-back-outline" size={30} color={COLOR.blue} />
+          </TouchableOpacity>
+          <Text style={styles.title}>Messenger</Text>
+        </View>
+        <FlatList
+          data={data}
+          renderItem={({item}) => (
+            <MessengerItem item={item} setOpenChat={setOpenChat} />
+          )}
+          keyExtractor={item => item.id} // tránh trùng các item với nhau
+          parentFlatList={this} //để lát làm swipe left và swipe right
+        />
       </View>
-      <FlatList
-        data={data}
-        renderItem={({item}) => (
-          <MessengerItem item={item} navigation={navigation} />
-        )}
-        keyExtractor={item => item.id} // tránh trùng các item với nhau
-        parentFlatList={this} //để lát làm swipe left và swipe right
-      />
-    </View>
+    </Modal>
   );
 };
 
@@ -103,6 +155,12 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: COLOR.white,
+  },
+  header: {
+    flexDirection: 'row',
+  },
+  button: {
+    paddingLeft: 10,
   },
   title: {
     fontSize: 24,

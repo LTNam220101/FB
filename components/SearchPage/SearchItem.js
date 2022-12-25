@@ -10,26 +10,24 @@ import React, {
 import {COLOR} from '../../styles/colors';
 
 const SearchItem = ({avatar, content, notiContent}) => {
+  return (
+    <TouchableHighlight>
+      <View style={[styles.wrapper]}>
+        <Image source={avatar} style={styles.img} />
+        <View style={styles.content}>
+          <Text numberOfLines={2} style={styles.fullContent}>
+            <Text style={styles.name}>{content} </Text>
+            <Text>{'\n'}</Text>
+            <Text>{notiContent}</Text>
+          </Text>
+        </View>
 
-    return (
-        <TouchableHighlight>
-          <View style={[styles.wrapper]}>
-            <Image source={avatar} style={styles.img} />
-            <View style={styles.content}>
-              <Text numberOfLines={2} style={styles.fullContent}>
-                <Text style={styles.name}>{content} </Text>
-                <Text>{"\n"}</Text>
-                <Text>{notiContent}</Text>
-              </Text>
-            </View>
-
-            <TouchableOpacity>
-              <Icon name="close" style={styles.icon} />
-            </TouchableOpacity>
-
-          </View>
-        </TouchableHighlight>
-    );
+        <TouchableOpacity>
+          <Icon name="close" style={styles.icon} />
+        </TouchableOpacity>
+      </View>
+    </TouchableHighlight>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -38,12 +36,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    borderColor: COLOR.grayBorder
+    borderColor: COLOR.grayBorder,
   },
   icon: {
-    marginTop:4,
+    marginTop: 4,
     color: COLOR.grayTime,
-    fontSize:30
+    fontSize: 30,
   },
   img: {
     width: 40,
@@ -61,8 +59,8 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: 'bold',
     color: COLOR.black,
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
 });
 
 export default SearchItem;
