@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
-import {AUTH_LOGIN} from './../../actions';
+import {CHECK_FRIEND} from '../../actions';
 
-const signupUrl = `/auth/login`;
+const checkFriendUrl = `/friends/status/`;
 
-function login(payload: Record<string, unknown>) {
-  return axios.post(signupUrl, payload);
+function checkFriend() {
+  return axios.get(checkFriendUrl);
 }
 
-function* doLogin(request: Request<Record<string, unknown>>): any {
+function* doCheckFriend(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(login, request.payload!);
+    const response = yield call(checkFriend);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doLogin(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchLogin() {
-  yield takeLatest(AUTH_LOGIN, doLogin);
+export default function* watchCheckFriend() {
+  yield takeLatest(CHECK_FRIEND, doCheckFriend);
 }

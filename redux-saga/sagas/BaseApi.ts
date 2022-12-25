@@ -1,20 +1,19 @@
-import axios from "axios";
+import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: `http://192.168.1.3:8000`,
-  // baseURL: `http://192.168.8.212:8000`,
+  baseURL: `http://10.90.201.38:8000`,
   headers: {
-    Accept: "application/json"
-  }
+    Accept: 'application/json',
+  },
 });
 
 instance.interceptors.request.use(
-  (config) => {
+  config => {
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // instance.interceptors.response.use(

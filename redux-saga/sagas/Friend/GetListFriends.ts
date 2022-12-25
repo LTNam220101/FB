@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import { put, takeLatest, call } from "redux-saga/effects";
 import { Request } from "../../../interfaces";
-import { GET_AVATAR } from "./../../actions";
+import { GET_LIST_FRIENDS } from "../../actions";
 
-const avatarUrl = `/user/get-avatar-original`;
+const getListFriendsUrl = `/friends/get-user-friends`;
 
-function getAvatar() {
-  return axios.get(avatarUrl);
+function getListFriends() {
+  return axios.get(getListFriendsUrl);
 }
 
-function* doGetAvatar(request: Request<Record<string, unknown>>): any {
+function* doGetListFriends(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(getAvatar);
+    const response = yield call(getListFriends);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doGetAvatar(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchGetAvatar() {
-  yield takeLatest(GET_AVATAR, doGetAvatar);
+export default function* watchGetListFriends() {
+  yield takeLatest(GET_LIST_FRIENDS, doGetListFriends);
 }

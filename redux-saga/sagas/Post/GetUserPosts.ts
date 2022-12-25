@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
-import {AUTH_LOGIN} from './../../actions';
+import {GET_USER_POSTS} from './../../actions';
 
-const signupUrl = `/auth/login`;
+const userPostsUrl = `/posts/posts-by-user`;
 
-function login(payload: Record<string, unknown>) {
-  return axios.post(signupUrl, payload);
+function getUserPosts() {
+  return axios.get(userPostsUrl);
 }
 
-function* doLogin(request: Request<Record<string, unknown>>): any {
+function* doGetUserPosts(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(login, request.payload!);
+    const response = yield call(getUserPosts);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doLogin(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchLogin() {
-  yield takeLatest(AUTH_LOGIN, doLogin);
+export default function* watchGetUserPosts() {
+  yield takeLatest(GET_USER_POSTS, doGetUserPosts);
 }

@@ -1,18 +1,17 @@
-import React, {
-  ScrollView,
+import {
   StyleSheet,
+  View,
+  ScrollView,
   Text,
   TouchableOpacity,
-  View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import NotiItem from './NotiItem';
+import React from 'react';
 import {useDispatch} from 'react-redux';
 import {authLogout} from '../LoginPage/actions';
 import {AUTH_LOGIN_CLEAR} from '../LoginPage/reducers';
 import {COLOR} from '../../styles/colors';
 
-const NotiPage = ({setIsSignIn}) => {
+const SettingPage = ({setIsSignIn}) => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -20,32 +19,18 @@ const NotiPage = ({setIsSignIn}) => {
     dispatch({type: AUTH_LOGIN_CLEAR});
     setIsSignIn(false);
   };
-
   return (
     <ScrollView style={{flex: 1, backgroundColor: COLOR.white}}>
       <View style={styles.header}>
-        <Text style={styles.text}>Thông báo</Text>
-        <TouchableOpacity style={styles.button} onPress={handleLogout}>
-          <Icon name="search" size={20} color={COLOR.black} />
-        </TouchableOpacity>
+        <Text style={styles.text}>Cài đặt</Text>
       </View>
-      <NotiItem
-        avatar={require('../../assets/avatar.jpg')}
-        name="Lương Thái Nam"
-        time="25p"
-      />
-      <NotiItem
-        avatar={require('../../assets/avatar.jpg')}
-        name="Lương Thái Nam"
-        read
-        time="25p"
-      />
-      <NotiItem
-        avatar={require('../../assets/avatar.jpg')}
-        name="Lương Thái Nam"
-        read
-        time="25p"
-      />
+      <TouchableOpacity
+        onPress={handleLogout}
+        style={styles.button}
+        underlayColor={COLOR.underlay}
+        activeOpacity={0.5}>
+        <Text style={styles.button_text}>Đăng xuất</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -66,14 +51,19 @@ const styles = StyleSheet.create({
     color: COLOR.black,
   },
   button: {
-    width: 30,
-    height: 30,
-    borderRadius: 21,
+    marginTop: 20,
+    marginRight: 10,
+    marginLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderRadius: 5,
     backgroundColor: COLOR.grayBackground,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 16,
+  },
+  button_text: {
+    color: COLOR.black,
   },
 });
 
-export default NotiPage;
+export default SettingPage;

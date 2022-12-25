@@ -3,15 +3,17 @@ import {COLOR} from '../styles/colors';
 import Icon from 'react-native-vector-icons/Feather';
 import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const AppBar = () => {
+const AppBar = ({setState}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>facebook</Text>
+      <TouchableOpacity onPress={() => setState(0)}>
+        <Text style={styles.text}>facebook</Text>
+      </TouchableOpacity>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => setState(1)}>
           <Icon name="search" size={29} color={COLOR.black} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => setState(2)}>
           <IconM name="facebook-messenger" size={29} color={COLOR.black} />
         </TouchableOpacity>
       </View>

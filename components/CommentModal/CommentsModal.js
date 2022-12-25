@@ -1,16 +1,18 @@
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import React, {
   FlatList,
   Modal,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {COLOR} from '../../styles/colors';
 import CommentItem from './CommentItem';
+import {useState} from 'react';
 
 const rawData = [
   {
@@ -22,8 +24,33 @@ const rawData = [
     time: '25p',
     likes: 20,
     liked: true,
-    hasChild: false,
-    child: [],
+    hasChild: true,
+    child: [
+      {
+        parentId: 1,
+        id: 3,
+        name: 'Lương Thái Nam',
+        avatar: '../../assets/avatar.jpg',
+        content: 'Đây là comment con',
+        time: '25p',
+        likes: 20,
+        liked: true,
+        hasChild: false,
+        child: [],
+      },
+      {
+        parentId: 1,
+        id: 4,
+        name: 'Lương Thái Nam',
+        avatar: '../../assets/avatar.jpg',
+        content: 'Đây là comment con 2',
+        time: '25p',
+        likes: 20,
+        liked: true,
+        hasChild: false,
+        child: [],
+      },
+    ],
   },
   {
     parentId: 0,
@@ -38,52 +65,30 @@ const rawData = [
     hasChild: false,
     child: [],
   },
-  {
-    parentId: 1,
-    id: 3,
-    name: 'Lương Thái Nam',
-    avatar: '../../assets/avatar.jpg',
-    content: 'Đây là comment con',
-    time: '25p',
-    likes: 20,
-    liked: true,
-    hasChild: false,
-    child: [],
-  },
-  {
-    parentId: 1,
-    id: 4,
-    name: 'Lương Thái Nam',
-    avatar: '../../assets/avatar.jpg',
-    content: 'Đây là comment con 2',
-    time: '25p',
-    likes: 20,
-    liked: true,
-    hasChild: false,
-    child: [],
-  },
 ];
 
-const processData = data => {
-  const dataReturn = [];
-  data.map(item => {
-    if (item.parentId === 0) {
-      dataReturn.push(item);
-    }
-  });
-  data.map(item => {
-    dataReturn.forEach(itemReturn => {
-      if (itemReturn.id === item.parentId) {
-        itemReturn.hasChild = true;
-        itemReturn.child.push(item);
-      }
-    });
-  });
-  return dataReturn;
-};
+// const processData = data => {
+//   const dataReturn = [];
+//   data.map(item => {
+//     if (item.parentId === 0) {
+//       dataReturn.push(item);
+//     }
+//   });
+//   data.map(item => {
+//     dataReturn.forEach(itemReturn => {
+//       if (itemReturn.id === item.parentId) {
+//         itemReturn.hasChild = true;
+//         itemReturn.child.push(item);
+//       }
+//     });
+//   });
+//   return dataReturn;
+// };
 
 const CommentsModal = ({modalVisible, setModalVisible, like, setLike, id}) => {
-  const dataComments = processData(rawData);
+  // const dataComments = processData(rawData);
+  const dataComments = rawData;
+  const [text, setText] = useState(undefined);
 
   const renderItem = ({item}) => (
     <CommentItem
@@ -130,6 +135,22 @@ const CommentsModal = ({modalVisible, setModalVisible, like, setLike, id}) => {
               renderItem={renderItem}
               keyExtractor={item => item.id}
             />
+            <View style={styles.commentWrapper}>
+              <TextInput
+                style={styles.commentText}
+                multiline={true}
+                cursorColor={COLOR.blue}
+                placeholder={'Viết gì đó...'}
+                placeholderTextColor={COLOR.black}
+                value={text}
+                onChangeText={text => setText(text)}
+              />
+            </View>
+            {text && (
+              <TouchableOpacity style={styles.send} onPress={() => {}}>
+                <IonIcon name="send" size={25} color={COLOR.blue} />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </Modal>
@@ -163,6 +184,25 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  commentWrapper: {
+    borderTopWidth: 1,
+    borderTopColor: COLOR.gray,
+    margin: -11,
+    backgroundColor: COLOR.white,
+  },
+  commentText: {
+    justifyContent: 'center',
+    backgroundColor: COLOR.gray,
+    marginTop: 3,
+    marginBottom: 3,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 20,
+  },
+  send: {
+    marginTop: 10,
+    alignItems: 'flex-end',
   },
 });
 
