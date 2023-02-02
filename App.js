@@ -41,7 +41,7 @@ const App = () => {
     <Provider store={store}>
       <StatusBar
         backgroundColor={isSignedIn ? COLOR.white : COLOR.blueBackgroundLogin}
-        barStyle={isSignedIn ? 'dark-content' : 'dark-content'}
+        barStyle={isSignedIn ? 'dark-content' : 'light-content'}
       />
       {isSignedIn ? (
         <SafeAreaView style={styles.container}>

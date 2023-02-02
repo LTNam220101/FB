@@ -32,7 +32,8 @@ const ProfilePage = () => {
         <Image source={CoverPhoto} style={styles.coverPhoto} />
         <View
           style={styles.buttons}
-          style={{position: 'absolute', alignSelf: 'flex-end', marginTop: 155}}>
+          // style={{position: 'absolute', alignSelf: 'flex-end', marginTop: 155}}
+        >
           <TouchableOpacity style={styles.button}>
             <Camera name="camera" size={29} color={COLOR.black} />
           </TouchableOpacity>
@@ -42,7 +43,8 @@ const ProfilePage = () => {
         <Image style={styles.avatar} source={Avatar} />
         <View
           style={styles.buttons}
-          style={{position: 'absolute', alignSelf: 'flex-end', bottom: 5}}>
+          // style={{position: 'absolute', alignSelf: 'flex-end', bottom: 5}}
+        >
           <TouchableOpacity style={styles.button}>
             <Camera name="camera" size={29} color={COLOR.black} />
           </TouchableOpacity>
@@ -103,11 +105,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.white,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

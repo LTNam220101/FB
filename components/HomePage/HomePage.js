@@ -7,6 +7,8 @@ import News from '../News/News';
 // import {getObject} from '../../utils/storage';
 // import {getUserPosts} from '../ProfilePage/actions';
 import {getPost} from '../News/actions';
+import {getUserPosts} from '../ProfilePage/actions';
+import {getObject} from '../../utils/storage';
 
 export const dataHomePage = [
   {
