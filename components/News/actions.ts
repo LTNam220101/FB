@@ -1,5 +1,5 @@
-import { GET_ALL_POSTS_FAILED, GET_ALL_POSTS_SUCCESS } from './reducers';
-import { GET_ALL_POSTS } from './../../redux-saga/actions';
+import {GET_ALL_POSTS_FAILED, GET_ALL_POSTS_SUCCESS} from './reducers';
+import {GET_ALL_POSTS} from './../../redux-saga/actions';
 
 export const getAllPosts = (payload: any, componentId?: string) => ({
   type: GET_ALL_POSTS,
@@ -16,8 +16,8 @@ export const getAllPosts = (payload: any, componentId?: string) => ({
   loading: true,
 });
 
-import { DELETE_ALL_POSTS_FAILED, DELETE_ALL_POSTS_SUCCESS } from './reducers';
-import { DELETE_ALL_POSTS } from './../../redux-saga/actions';
+import {DELETE_ALL_POSTS_FAILED, DELETE_ALL_POSTS_SUCCESS} from './reducers';
+import {DELETE_ALL_POSTS} from './../../redux-saga/actions';
 
 export const deleteAllPosts = (payload: any, componentId?: string) => ({
   type: DELETE_ALL_POSTS,
@@ -34,8 +34,8 @@ export const deleteAllPosts = (payload: any, componentId?: string) => ({
   loading: true,
 });
 
-import { DELETE_POST_FAILED, DELETE_POST_SUCCESS } from './reducers';
-import { DELETE_POST } from './../../redux-saga/actions';
+import {DELETE_POST_FAILED, DELETE_POST_SUCCESS} from './reducers';
+import {DELETE_POST} from './../../redux-saga/actions';
 
 export const deletePost = (payload: any, componentId?: string) => ({
   type: DELETE_POST,
@@ -52,8 +52,8 @@ export const deletePost = (payload: any, componentId?: string) => ({
   loading: true,
 });
 
-import { LIKE_POST_FAILED, LIKE_POST_SUCCESS } from './reducers';
-import { LIKE_POST } from './../../redux-saga/actions';
+import {LIKE_POST_FAILED, LIKE_POST_SUCCESS} from './reducers';
+import {LIKE_POST} from './../../redux-saga/actions';
 
 export const likePost = (payload: any, componentId?: string) => ({
   type: LIKE_POST,
@@ -63,6 +63,24 @@ export const likePost = (payload: any, componentId?: string) => ({
     },
     failure: {
       type: LIKE_POST_FAILED,
+    },
+  },
+  payload,
+  componentId,
+  loading: true,
+});
+
+import {GET_POST_FAILED, GET_POST_SUCCESS} from './reducers';
+import {GET_POST} from './../../redux-saga/actions';
+
+export const getPost = (payload: any, componentId?: string) => ({
+  type: GET_POST,
+  response: {
+    success: {
+      type: GET_POST_SUCCESS,
+    },
+    failure: {
+      type: GET_POST_FAILED,
     },
   },
   payload,

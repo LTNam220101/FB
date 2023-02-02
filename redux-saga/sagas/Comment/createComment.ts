@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
-import {GET_LIST_FRIENDS} from '../../actions';
+import {CREATE_COMMENT} from './../../actions';
 
-const getListFriendsUrl = `/friends/get-user-friends`;
+const createCommentUrl = '/comment';
 
-function getListFriends() {
-  return axios.get(getListFriendsUrl);
+function createComment(payload: Record<string, unknown>) {
+  return axios.post(createCommentUrl, payload);
 }
 
-function* doGetListFriends(request: Request<Record<string, unknown>>): any {
+function* doCreateComment(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(getListFriends);
+    const response = yield call(createComment, request.payload!);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doGetListFriends(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchGetListFriends() {
-  yield takeLatest(GET_LIST_FRIENDS, doGetListFriends);
+export default function* watchGetUserPosts() {
+  yield takeLatest(CREATE_COMMENT, doCreateComment);
 }

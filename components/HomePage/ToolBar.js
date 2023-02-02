@@ -12,7 +12,7 @@ import Avatar from '../Avatar';
 import {COLOR} from './../../styles/colors';
 import {useSelector} from 'react-redux';
 
-const ToolBar = () => {
+const ToolBar = ({inProfile}) => {
   const getAvatarResult = useSelector(state => state.getAvatarResult);
   const [modalVisible, setModalVisible] = useState(false);
   const imageBlob =
@@ -33,7 +33,11 @@ const ToolBar = () => {
         onPress={() => setModalVisible(true)}
         underlayColor={COLOR.underlay}
         activeOpacity={0.05}>
-        <Text style={{color: COLOR.black}}>Ngày hôm nay của bạn thế nào?</Text>
+        <Text style={{color: COLOR.black}}>
+          {inProfile
+            ? 'Viết gì đó cho bạn bè'
+            : 'Ngày hôm nay của bạn thế nào?'}
+        </Text>
       </TouchableHighlight>
       {/* <TouchableOpacity style={styles.button}>
         <Icon name="images-outline" size={25} color={COLOR.green} />

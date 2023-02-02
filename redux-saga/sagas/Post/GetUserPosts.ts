@@ -3,15 +3,17 @@ import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
 import {GET_USER_POSTS} from './../../actions';
 
-const userPostsUrl = `/posts/posts-by-user`;
+const userPostsUrl = '/posts/posts-by-user';
 
-function getUserPosts() {
-  return axios.get(userPostsUrl);
+function getUserPosts(payload: Record<string, unknown>) {
+  return axios.get(userPostsUrl, {
+    params: {author: payload.author, take: 10, skip: 0},
+  });
 }
 
 function* doGetUserPosts(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(getUserPosts);
+    const response = yield call(getUserPosts, request.payload!);
     yield put({
       type: request.response?.success?.type,
       payload: {

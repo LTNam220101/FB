@@ -12,7 +12,9 @@ import React, {
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {COLOR} from '../../styles/colors';
 import CommentItem from './CommentItem';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {createComment} from './actions';
 
 const rawData = [
   {
@@ -86,9 +88,32 @@ const rawData = [
 // };
 
 const CommentsModal = ({modalVisible, setModalVisible, like, setLike, id}) => {
+  const dispatch = useDispatch();
+  const createCommentResult = useSelector(state => state.createCommentResult);
   // const dataComments = processData(rawData);
   const dataComments = rawData;
   const [text, setText] = useState(undefined);
+
+  useEffect(() => {
+    if (createCommentResult) {
+      if (createCommentResult.success) {
+        console.log(createCommentResult.response);
+        // Toast.show('Tạo bài đăng thành công.', Toast.LONG);
+        // setModalVisible(!modalVisible);
+      } else {
+        // Toast.show('Tạo bài đăng thất bại.', Toast.LONG);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createCommentResult]);
+
+  const handleComment = () => {
+    const payload = {
+      postId: id,
+      content: text,
+    };
+    dispatch(createComment(payload));
+  };
 
   const renderItem = ({item}) => (
     <CommentItem
@@ -147,7 +172,7 @@ const CommentsModal = ({modalVisible, setModalVisible, like, setLike, id}) => {
               />
             </View>
             {text && (
-              <TouchableOpacity style={styles.send} onPress={() => {}}>
+              <TouchableOpacity style={styles.send} onPress={handleComment}>
                 <IonIcon name="send" size={25} color={COLOR.blue} />
               </TouchableOpacity>
             )}

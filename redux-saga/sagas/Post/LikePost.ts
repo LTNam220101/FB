@@ -1,7 +1,7 @@
 import axios from '../BaseApi';
-import { put, takeLatest, call } from "redux-saga/effects";
-import { Request } from "../../../interfaces";
-import { LIKE_POST } from "../../actions";
+import {put, takeLatest, call} from 'redux-saga/effects';
+import {Request} from '../../../interfaces';
+import {LIKE_POST} from '../../actions';
 
 const likePostUrl = `/posts/like-post/`;
 
@@ -17,8 +17,8 @@ function* doLikePost(request: Request<Record<string, unknown>>): any {
       payload: {
         request: request.payload,
         componentId: request.componentId,
-        response: response.data
-      }
+        response: response.data,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -28,8 +28,8 @@ function* doLikePost(request: Request<Record<string, unknown>>): any {
       payload: {
         request: request.payload,
         componentId: request.componentId,
-        response: error
-      }
+        response: error,
+      },
     });
   }
 }

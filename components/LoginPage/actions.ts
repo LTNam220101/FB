@@ -1,8 +1,8 @@
-import { AUTH_LOGIN_FAILED, AUTH_LOGIN_SUCCESS } from './reducers';
-import { AUTH_LOGIN } from './../../redux-saga/actions';
+import {AUTH_LOGIN_FAILED, AUTH_LOGIN_SUCCESS} from './reducers';
+import {AUTH_LOGIN} from './../../redux-saga/actions';
 
-import { AUTH_LOGOUT_FAILED, AUTH_LOGOUT_SUCCESS } from './reducers';
-import { AUTH_LOGOUT } from './../../redux-saga/actions';
+import {AUTH_LOGOUT_FAILED, AUTH_LOGOUT_SUCCESS} from './reducers';
+import {AUTH_LOGOUT} from './../../redux-saga/actions';
 
 export const authLogin = (payload: any, componentId?: string) => ({
   type: AUTH_LOGIN,

@@ -5,13 +5,13 @@ import {REMOVE_FRIEND} from '../../actions';
 
 const removeFriendUrl = `/friends/set-remove-friend`;
 
-function removeFriend() {
-  return axios.put(removeFriendUrl);
+function removeFriend(payload: any) {
+  return axios.put(removeFriendUrl, payload);
 }
 
 function* doRemoveFriend(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(removeFriend);
+    const response = yield call(removeFriend, request.payload);
     yield put({
       type: request.response?.success?.type,
       payload: {

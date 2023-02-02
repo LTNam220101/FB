@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import React, {
   Alert,
   Button,
@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import Swiper from 'react-native-swiper';
 import VideoPlayer from 'react-native-video-player';
+import Toast from 'react-native-simple-toast';
 import {requestCameraPermission} from './../../utils/requestPermisssion/requestCameraPermission';
 import {COLOR} from '../../styles/colors';
 import {createPost} from './actions';
@@ -27,7 +28,17 @@ const CreatePostModal = ({modalVisible, setModalVisible}) => {
   const [photos, setPhotos] = useState(undefined);
   const [video, setVideo] = useState(undefined);
   const [index, setIndex] = useState(0);
-  console.log(createPostResult);
+  useEffect(() => {
+    if (createPostResult) {
+      if (createPostResult.success) {
+        Toast.show('Tạo bài đăng thành công.', Toast.LONG);
+        setModalVisible(!modalVisible);
+      } else {
+        Toast.show('Tạo bài đăng thất bại.', Toast.LONG);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createPostResult]);
   const ref = useRef();
   const handlePress = () => {
     const payload = {
@@ -35,6 +46,7 @@ const CreatePostModal = ({modalVisible, setModalVisible}) => {
       video: video,
       content: text,
     };
+    // ToastAndroid.show('Request sent successfully!', ToastAndroid.SHORT);
     dispatch(createPost(payload));
   };
 

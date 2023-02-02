@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {FlatList, StyleSheet, View} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import ToolBar from './ToolBar';
 import News from '../News/News';
-import {getAvatar} from '../../global-actions/getAvatar/actions';
+// import {getObject} from '../../utils/storage';
+// import {getUserPosts} from '../ProfilePage/actions';
+import {getPost} from '../News/actions';
 
 export const dataHomePage = [
   {
@@ -88,33 +90,57 @@ export const dataHomePage = [
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  // const getUserPostsResult = useSelector(state => state.getUserPostsResult);
 
   // useEffect(() => {
-  //   dispatch(getAvatar());
+  //   if (getUserPostsResult) {
+  //     if (getUserPostsResult.success) {
+  //       console.log(getUserPostsResult.response);
+  //       // Toast.show('Tạo bài đăng thành công.', Toast.LONG);
+  //       // setModalVisible(!modalVisible);
+  //     } else {
+  //       // Toast.show('Tạo bài đăng thất bại.', Toast.LONG);
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [getUserPostsResult]);
+
+  // useEffect(() => {
+  //   getObject('user').then(user => {
+  //     dispatch(getUserPosts({author: user.id}));
+  //   });
   // }, []);
 
-  const renderItem = ({item}) => (
-    <News
-      avatar={require('../../assets/avatar.jpg')}
-      name={item.name}
-      time={item.time}
-      content={item.content}
-      liked={item.liked}
-      likes={item.likes}
-      comments={item.comments}
-      id={item.id}
-      images={item.images}
-      video={item.video}
-    />
-  );
+  const getPostResult = useSelector(state => state.getPostResult);
+
+  useEffect(() => {
+    if (getPostResult) {
+      if (getPostResult.success) {
+        // console.log(getPostResult.response.data);
+        // Toast.show('Tạo bài đăng thành công.', Toast.LONG);
+        // setModalVisible(!modalVisible);
+      } else {
+        // Toast.show('Tạo bài đăng thất bại.', Toast.LONG);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getPostResult]);
+
+  useEffect(() => {
+    dispatch(getPost({postId: '634076d9-b3cf-4850-8177-462df54d9662'}));
+  }, []);
+
+  const renderItem = ({item}) => <News item={item} />;
   return (
     <View style={styles.homePage}>
-      <FlatList
-        data={dataHomePage}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        ListHeaderComponent={ToolBar}
-      />
+      {getPostResult && (
+        <FlatList
+          data={[getPostResult.response.data]}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          ListHeaderComponent={ToolBar}
+        />
+      )}
     </View>
   );
 };

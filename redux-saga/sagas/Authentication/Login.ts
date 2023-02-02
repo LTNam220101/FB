@@ -3,9 +3,10 @@ import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
 import {AUTH_LOGIN} from './../../actions';
 
-const signupUrl = `/auth/login`;
+const signupUrl = '/auth/login';
 
 function login(payload: Record<string, unknown>) {
+  console.log(payload);
   return axios.post(signupUrl, payload);
 }
 

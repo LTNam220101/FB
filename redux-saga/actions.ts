@@ -12,6 +12,7 @@ export const GET_USER_POSTS = 'GET_USER_POSTS';
 export const DELETE_ALL_POSTS = 'DELETE_ALL_POSTS';
 export const DELETE_POST = 'DELETE_POST';
 export const LIKE_POST = 'LIKE_POST';
+export const GET_POST = 'GET_POST';
 
 export const SEND_REQUEST = 'SEND_REQUEST';
 export const GET_REQUESTS = 'GET_REQUESTS';
@@ -20,3 +21,5 @@ export const REMOVE_FRIEND = 'REMOVE_FRIEND';
 export const GET_LIST_FRIENDS = 'GET_LIST_FRIENDS';
 export const CANCEL_REQUEST = 'CANCEL_REQUEST';
 export const CHECK_FRIEND = 'CHECK_FRIEND';
+
+export const CREATE_COMMENT = 'CREATE_COMMENT';

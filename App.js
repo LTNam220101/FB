@@ -24,12 +24,12 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [openAppBar, setOpenAppBar] = useState(1);
-  const [isSignedIn, setIsSignIn] = useState(true);
+  const [isSignedIn, setIsSignIn] = useState(false);
   const [state, setState] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
-      setIsSignIn(true);
+      setIsSignIn(false);
     }, 2000);
   }, []);
 

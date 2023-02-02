@@ -5,13 +5,13 @@ import {CANCEL_REQUEST} from '../../actions';
 
 const cancelRequestUrl = `/friends/cancel-request`;
 
-function cancelRequest() {
-  return axios.post(cancelRequestUrl);
+function cancelRequest(payload: any) {
+  return axios.post(cancelRequestUrl, payload);
 }
 
 function* doCancelRequest(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(cancelRequest);
+    const response = yield call(cancelRequest, request.payload);
     yield put({
       type: request.response?.success?.type,
       payload: {

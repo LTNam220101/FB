@@ -12,24 +12,29 @@ import CommentsModal from '../CommentModal/CommentsModal';
 import {COLOR} from '../../styles/colors';
 import Swiper from 'react-native-swiper';
 import VideoPlayer from 'react-native-video-player';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
-const News = ({
-  avatar,
-  name,
-  time,
-  content,
-  images,
-  video,
-  likes,
-  liked,
-  comments,
-  id,
-}) => {
-  const [like, setLike] = useState(liked);
+// id,
+// author,
+// createAt,
+// content,
+// status,
+// medias,
+// numComments,
+// numLikes,
+// is_liked,
+// is_blocked,
+// can_edit,
+// banned,
+// can_comment,
+// }
+
+const News = ({item}) => {
+  // const [like, setLike] = useState(liked);
   const [modalVisible, setModalVisible] = useState(false);
 
   const onLikeNews = () => {
-    setLike(pre => !pre);
+    // setLike(pre => !pre);
   };
 
   return (
@@ -37,9 +42,9 @@ const News = ({
       <CommentsModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        like={like}
-        setLike={setLike}
-        id={id}
+        // like={like}
+        // setLike={setLike}
+        id={item.id}
       />
       <TouchableHighlight
         style={styles.top}
@@ -47,10 +52,12 @@ const News = ({
         underlayColor={COLOR.underlay}
         activeOpacity={0.05}>
         <>
-          <Image source={avatar} style={styles.img} />
+          <Image source={{uri: item.author.avatar}} style={styles.img} />
           <View style={styles.text}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={[styles.time, styles.gray]}>{time}</Text>
+            <Text style={styles.name}>{item.author.name}</Text>
+            <Text style={[styles.time, styles.gray]}>
+              {formatDistanceToNow(new Date(item.createdAt).getTime())}
+            </Text>
           </View>
           <TouchableOpacity style={styles.dots}>
             <Icon name="dots-horizontal" size={25} color={COLOR.grayTime} />
@@ -64,44 +71,50 @@ const News = ({
         onPress={() => setModalVisible(true)}
         underlayColor={COLOR.underlay}
         activeOpacity={0.05}>
-        <Text style={styles.content}>{content}</Text>
+        <Text style={styles.content}>{item.content}</Text>
       </TouchableHighlight>
-      {images && (
-        <Swiper loop={false}>
-          {images.map((image, index) => (
-            <Image source={image} style={styles.imgContent} key={index} />
-          ))}
-        </Swiper>
-      )}
-      {video && (
-        <VideoPlayer
-          // video={{
-          //   uri: 'https://drive.google.com/file/d/1eJhHt1Jug1fkODmgEW7-uVd825WcEunt/view?usp=sharing',
-          // }}
-          video={video}
-          videoWidth={1600}
-          videoHeight={900}
-        />
-      )}
+      {item.medias &&
+        item.medias[0] &&
+        (item.medias[0].type === '0' ? (
+          <Swiper loop={false} style={styles.wrapper}>
+            {item.medias.map((image, index) => (
+              <Image
+                source={{uri: image.name}}
+                style={styles.imgContent}
+                key={index}
+              />
+            ))}
+          </Swiper>
+        ) : (
+          <VideoPlayer
+            video={{
+              uri: item.medias[0].name,
+            }}
+            videoWidth={1600}
+            videoHeight={900}
+          />
+        ))}
       <TouchableHighlight
         style={styles.like}
         onPress={() => setModalVisible(true)}
         underlayColor={COLOR.underlay}
         activeOpacity={0.05}>
         <>
-          <Text style={styles.gray}>{likes} lượt thích</Text>
-          <Text style={styles.gray}>{comments} bình luận</Text>
+          <Text style={styles.gray}>{item.numLikes} lượt thích</Text>
+          <Text style={styles.grayb}>{item.numComments} bình luận</Text>
         </>
       </TouchableHighlight>
       <View style={styles.bottom}>
         <TouchableOpacity style={styles.button} onPress={onLikeNews}>
           <Icon
-            name={like ? 'thumb-up' : 'thumb-up-outline'}
+            name={item.is_liked ? 'thumb-up' : 'thumb-up-outline'}
             size={15}
-            color={like ? COLOR.active : COLOR.grayTime}
+            color={item.is_liked ? COLOR.active : COLOR.grayTime}
             style={styles.icon}
           />
-          <Text style={like ? styles.button_like : styles.gray}>Thích</Text>
+          <Text style={item.is_liked ? styles.button_like : styles.gray}>
+            Thích
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
@@ -166,6 +179,7 @@ const styles = StyleSheet.create({
   },
   imgContent: {
     width: '100%',
+    height: 300,
     flex: 1,
   },
   backgroundVideo: {

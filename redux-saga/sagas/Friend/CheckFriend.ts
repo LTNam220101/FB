@@ -3,15 +3,15 @@ import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
 import {CHECK_FRIEND} from '../../actions';
 
-const checkFriendUrl = `/friends/status/`;
+const checkFriendUrl = id => `/friends/status/${id}`;
 
-function checkFriend() {
-  return axios.get(checkFriendUrl);
+function checkFriend(payload: any) {
+  return axios.get(checkFriendUrl(payload.id));
 }
 
 function* doCheckFriend(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(checkFriend);
+    const response = yield call(checkFriend, request.payload);
     yield put({
       type: request.response?.success?.type,
       payload: {

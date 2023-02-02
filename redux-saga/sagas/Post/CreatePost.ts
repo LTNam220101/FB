@@ -8,7 +8,6 @@ const createPostUrl = `/posts/create`;
 
 function createPost(payload: Record<string, unknown>) {
   const formData = new FormData();
-  console.log(payload.video);
   if (payload.images && (payload.images as File[]).length) {
     for (let i = 0; i < (payload.images as File[]).length; i++) {
       const upload_body = {
@@ -33,7 +32,7 @@ function createPost(payload: Record<string, unknown>) {
     formData.append('video', upload_body as unknown as Blob);
   }
   formData.append('content', payload.content as string);
-  console.log(formData);
+  formData.append('status', '');
   return axios.post(createPostUrl, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',

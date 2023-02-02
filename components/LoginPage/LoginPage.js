@@ -12,8 +12,11 @@ import {
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import React, {LogBox} from 'react-native';
+//import DeviceInfo which will help us to get UniqueId
+import DeviceInfo from 'react-native-device-info';
 import {authLogin} from './actions';
 import {COLOR} from '../../styles/colors';
+import {setItem, setObject} from '../../utils/storage';
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 265) / 527);
@@ -43,6 +46,8 @@ const LoginPage = ({navigation, route}) => {
   useEffect(() => {
     if (LoginResult) {
       if (LoginResult.success) {
+        setObject('user', LoginResult.response.data.user);
+        setItem('token', LoginResult.response.data.token);
         route.params.setIsSignIn(true);
       } else {
         setErr('Có lỗi xảy ra, vui lòng thử lại');
@@ -52,7 +57,9 @@ const LoginPage = ({navigation, route}) => {
   }, [LoginResult]);
 
   const handleLogin = async values => {
-    dispatch(authLogin(values));
+    DeviceInfo.getUniqueId().then(uniqueId =>
+      dispatch(authLogin({...values, uuid: uniqueId})),
+    );
   };
 
   return (

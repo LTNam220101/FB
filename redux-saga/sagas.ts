@@ -6,8 +6,19 @@ import {
   deleteAllPosts,
   deletePost,
   getAllPosts,
+  getPost,
   getUserPosts,
 } from './sagas/Post';
+import {createComment} from './sagas/Comment';
+import {
+  cancelRequest,
+  checkFriend,
+  getListFriends,
+  getRequests,
+  removeFriend,
+  sendRequest,
+  setAccept,
+} from './sagas/Friend';
 
 export default function* rootSaga() {
   yield all([
@@ -21,6 +32,15 @@ export default function* rootSaga() {
     getUserPosts(),
     deleteAllPosts(),
     deletePost(),
+    getPost(),
     updateProfile(),
+    createComment(),
+    checkFriend(),
+    cancelRequest(),
+    getListFriends(),
+    getRequests(),
+    removeFriend(),
+    sendRequest(),
+    setAccept(),
   ]);
 }

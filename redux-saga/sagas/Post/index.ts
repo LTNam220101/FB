@@ -4,6 +4,7 @@ import getUserPosts from './GetUserPosts';
 import deleteAllPosts from './DeleteAllPosts';
 import deletePost from './DeletePost';
 import likePost from './LikePost';
+import getPost from './GetPost';
 
 export {
   createPost,
@@ -12,4 +13,5 @@ export {
   getUserPosts,
   deletePost,
   likePost,
+  getPost,
 };
