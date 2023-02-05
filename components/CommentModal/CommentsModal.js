@@ -97,7 +97,7 @@ const CommentsModal = ({modalVisible, setModalVisible, like, setLike, id}) => {
   useEffect(() => {
     if (createCommentResult) {
       if (createCommentResult.success) {
-        console.log(createCommentResult.response);
+        // console.log(createCommentResult.response);
         // Toast.show('Tạo bài đăng thành công.', Toast.LONG);
         // setModalVisible(!modalVisible);
       } else {

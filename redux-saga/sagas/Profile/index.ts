@@ -1,5 +1,6 @@
-import avatar from './Avatar';
-import cover from './Cover';
+import updateAvatar from './UpdateAvatar';
+import updateCover from './UpdateCover';
 import updateProfile from './UpdateProfile';
+import checkUser from './CheckUser';
 
-export {avatar, updateProfile, cover};
+export {updateAvatar, updateProfile, updateCover, checkUser};

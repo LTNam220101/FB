@@ -12,12 +12,15 @@ import {
 import {
   CancelRequestResult,
   CheckFriendResult,
+  CheckUserResult,
   GetListFriendsResult,
   GetRequestsResult,
   GetUserPostsResult,
   RemoveFriendResult,
   SendRequestResult,
   SetAcceptResult,
+  UpdateAvatarResult,
+  UpdateCoverResult,
   UpdateProfileResult,
 } from '../components/ProfilePage/reducers';
 import {RegisterResult} from '../components/SignupPage/reducers';
@@ -45,6 +48,9 @@ const rootReducer = combineReducers({
   removeFriendResult: RemoveFriendResult,
   sendRequestResult: SendRequestResult,
   setAcceptResult: SetAcceptResult,
+  checkUserResult: CheckUserResult,
+  updateAvatarResult: UpdateAvatarResult,
+  updateCoverResult: UpdateCoverResult,
 });
 
 export type State = ReturnType<typeof rootReducer>;

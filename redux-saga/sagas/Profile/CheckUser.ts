@@ -1,20 +1,17 @@
 import axios from '../BaseApi';
 import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
-import {GET_USER_POSTS} from './../../actions';
+import {CHECK_USER} from '../../actions';
 
-const userPostsUrl = '/posts/posts-by-user';
+const checkUserUrl = `/auth`;
 
-function getUserPosts(payload: Record<string, unknown>) {
-  const {id, take, skip} = payload;
-  return axios.get(userPostsUrl, {
-    params: {id: id, take: take, skip: skip},
-  });
+function checkUser() {
+  return axios.get(checkUserUrl);
 }
 
-function* doGetUserPosts(request: Request<Record<string, unknown>>): any {
+function* doCheckUser(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(getUserPosts, request.payload!);
+    const response = yield call(checkUser);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -37,6 +34,6 @@ function* doGetUserPosts(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchGetUserPosts() {
-  yield takeLatest(GET_USER_POSTS, doGetUserPosts);
+export default function* watchCheckUser() {
+  yield takeLatest(CHECK_USER, doCheckUser);
 }

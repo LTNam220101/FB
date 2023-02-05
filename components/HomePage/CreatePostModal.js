@@ -20,14 +20,24 @@ import Toast from 'react-native-simple-toast';
 import {requestCameraPermission} from './../../utils/requestPermisssion/requestCameraPermission';
 import {COLOR} from '../../styles/colors';
 import {createPost} from './actions';
+import {getObject} from '../../utils/storage';
 
 const CreatePostModal = ({modalVisible, setModalVisible}) => {
   const dispatch = useDispatch();
   const createPostResult = useSelector(state => state.createPostResult);
+  const [user, setUser] = useState();
+
   const [text, setText] = useState(undefined);
   const [photos, setPhotos] = useState(undefined);
   const [video, setVideo] = useState(undefined);
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    getObject('user').then(user => {
+      setUser(user);
+    });
+  }, []);
+
   useEffect(() => {
     if (createPostResult) {
       if (createPostResult.success) {
@@ -138,11 +148,8 @@ const CreatePostModal = ({modalVisible, setModalVisible}) => {
           />
         </View>
         <View style={styles.user}>
-          <Image
-            source={require('../../assets/avatar.jpg')}
-            style={styles.image}
-          />
-          <Text style={styles.userName}>Luong Nam</Text>
+          {user && <Image source={{uri: user.avatar}} style={styles.image} />}
+          {user && <Text style={styles.userName}>{user.name}</Text>}
         </View>
         <Pressable style={styles.input} onPress={() => ref.current.focus()}>
           <TextInput

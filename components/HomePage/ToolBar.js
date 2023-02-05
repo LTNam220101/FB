@@ -1,33 +1,27 @@
-import {useState} from 'react';
-import React, {
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {useEffect, useState} from 'react';
+import React, {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import CreatePostModal from './CreatePostModal';
 import Avatar from '../Avatar';
 import {COLOR} from './../../styles/colors';
-import {useSelector} from 'react-redux';
+import {getObject} from '../../utils/storage';
 
 const ToolBar = ({inProfile}) => {
-  const getAvatarResult = useSelector(state => state.getAvatarResult);
   const [modalVisible, setModalVisible] = useState(false);
-  const imageBlob =
-    getAvatarResult && getAvatarResult.response
-      ? getAvatarResult.response.blob()
-      : undefined;
-  const imageObjectURL = imageBlob ? URL.createObjectURL(imageBlob) : undefined;
-  console.log(imageObjectURL);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    getObject('user').then(user => {
+      setUser(user);
+    });
+  }, []);
+
   return (
     <View style={styles.view}>
       <CreatePostModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
-      <Avatar source={require('../../assets/avatar.jpg')} />
+      {user && <Avatar source={{uri: user.avatar}} />}
       <TouchableHighlight
         style={styles.input}
         onPress={() => setModalVisible(true)}

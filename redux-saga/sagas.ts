@@ -1,6 +1,11 @@
 import {all} from 'redux-saga/effects';
 import {login, logout, register} from './sagas/Authentication';
-import {avatar, cover, updateProfile} from './sagas/Profile';
+import {
+  checkUser,
+  updateAvatar,
+  updateCover,
+  updateProfile,
+} from './sagas/Profile';
 import {
   createPost,
   deleteAllPosts,
@@ -8,6 +13,7 @@ import {
   getAllPosts,
   getPost,
   getUserPosts,
+  likePost,
 } from './sagas/Post';
 import {createComment} from './sagas/Comment';
 import {
@@ -25,13 +31,14 @@ export default function* rootSaga() {
     login(),
     register(),
     logout(),
-    avatar(),
-    cover(),
+    updateAvatar(),
+    updateCover(),
     createPost(),
     getAllPosts(),
     getUserPosts(),
     deleteAllPosts(),
     deletePost(),
+    likePost(),
     getPost(),
     updateProfile(),
     createComment(),
@@ -42,5 +49,6 @@ export default function* rootSaga() {
     removeFriend(),
     sendRequest(),
     setAccept(),
+    checkUser(),
   ]);
 }

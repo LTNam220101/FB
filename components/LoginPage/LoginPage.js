@@ -57,9 +57,9 @@ const LoginPage = ({navigation, route}) => {
   }, [LoginResult]);
 
   const handleLogin = async values => {
-    DeviceInfo.getUniqueId().then(uniqueId =>
-      dispatch(authLogin({...values, uuid: uniqueId})),
-    );
+    DeviceInfo.getUniqueId().then(uniqueId => {
+      dispatch(authLogin({...values, uuid: uniqueId}));
+    });
   };
 
   return (

@@ -16,6 +16,42 @@ export const updateProfile = (payload: any, componentId?: string) => ({
   loading: true,
 });
 
+import {UPDATE_AVATAR_FAILED, UPDATE_AVATAR_SUCCESS} from './reducers';
+import {UPDATE_AVATAR} from './../../redux-saga/actions';
+
+export const updateAvatar = (payload: any, componentId?: string) => ({
+  type: UPDATE_AVATAR,
+  response: {
+    success: {
+      type: UPDATE_AVATAR_SUCCESS,
+    },
+    failure: {
+      type: UPDATE_AVATAR_FAILED,
+    },
+  },
+  payload,
+  componentId,
+  loading: true,
+});
+
+import {UPDATE_COVER_FAILED, UPDATE_COVER_SUCCESS} from './reducers';
+import {UPDATE_COVER} from './../../redux-saga/actions';
+
+export const updateCover = (payload: any, componentId?: string) => ({
+  type: UPDATE_COVER,
+  response: {
+    success: {
+      type: UPDATE_COVER_SUCCESS,
+    },
+    failure: {
+      type: UPDATE_COVER_FAILED,
+    },
+  },
+  payload,
+  componentId,
+  loading: true,
+});
+
 import {GET_USER_POSTS_FAILED, GET_USER_POSTS_SUCCESS} from './reducers';
 import {GET_USER_POSTS} from './../../redux-saga/actions';
 
@@ -153,6 +189,24 @@ export const setAccept = (payload: any, componentId?: string) => ({
     },
     failure: {
       type: SET_ACCEPT_FAILED,
+    },
+  },
+  payload,
+  componentId,
+  loading: true,
+});
+
+import {CHECK_USER_FAILED, CHECK_USER_SUCCESS} from './reducers';
+import {CHECK_USER} from './../../redux-saga/actions';
+
+export const checkUser = (payload: any, componentId?: string) => ({
+  type: CHECK_USER,
+  response: {
+    success: {
+      type: CHECK_USER_SUCCESS,
+    },
+    failure: {
+      type: CHECK_USER_FAILED,
     },
   },
   payload,

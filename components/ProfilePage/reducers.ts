@@ -10,6 +10,26 @@ export const UpdateProfileResult = createReducer(
   UPDATE_PROFILE_CLEAR,
 );
 
+export const UPDATE_AVATAR_SUCCESS = 'UPDATE_AVATAR_SUCCESS';
+export const UPDATE_AVATAR_FAILED = 'UPDATE_AVATAR_FAILED';
+export const UPDATE_AVATAR_CLEAR = 'UPDATE_AVATAR_CLEAR';
+
+export const UpdateAvatarResult = createReducer(
+  UPDATE_AVATAR_SUCCESS,
+  UPDATE_AVATAR_FAILED,
+  UPDATE_AVATAR_CLEAR,
+);
+
+export const UPDATE_COVER_SUCCESS = 'UPDATE_COVER_SUCCESS';
+export const UPDATE_COVER_FAILED = 'UPDATE_COVER_FAILED';
+export const UPDATE_COVER_CLEAR = 'UPDATE_COVER_CLEAR';
+
+export const UpdateCoverResult = createReducer(
+  UPDATE_COVER_SUCCESS,
+  UPDATE_COVER_FAILED,
+  UPDATE_COVER_CLEAR,
+);
+
 export const GET_USER_POSTS_SUCCESS = 'GET_USER_POSTS_SUCCESS';
 export const GET_USER_POSTS_FAILED = 'GET_USER_POSTS_FAILED';
 export const GET_USER_POSTS_CLEAR = 'GET_USER_POSTS_CLEAR';
@@ -88,4 +108,14 @@ export const SetAcceptResult = createReducer(
   SET_ACCEPT_SUCCESS,
   SET_ACCEPT_FAILED,
   SET_ACCEPT_CLEAR,
+);
+
+export const CHECK_USER_SUCCESS = 'CHECK_USER_SUCCESS';
+export const CHECK_USER_FAILED = 'CHECK_USER_FAILED';
+export const CHECK_USER_CLEAR = 'CHECK_USER_CLEAR';
+
+export const CheckUserResult = createReducer(
+  CHECK_USER_SUCCESS,
+  CHECK_USER_FAILED,
+  CHECK_USER_CLEAR,
 );

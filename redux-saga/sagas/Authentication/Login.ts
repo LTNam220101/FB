@@ -6,7 +6,6 @@ import {AUTH_LOGIN} from './../../actions';
 const signupUrl = '/auth/login';
 
 function login(payload: Record<string, unknown>) {
-  console.log(payload);
   return axios.post(signupUrl, payload);
 }
 

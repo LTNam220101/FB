@@ -1,5 +1,5 @@
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import React, {
   Image,
   StyleSheet,
@@ -13,6 +13,8 @@ import {COLOR} from '../../styles/colors';
 import Swiper from 'react-native-swiper';
 import VideoPlayer from 'react-native-video-player';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import {useDispatch, useSelector} from 'react-redux';
+import {getPost, likePost} from './actions';
 
 // id,
 // author,
@@ -30,12 +32,34 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 // }
 
 const News = ({item}) => {
-  // const [like, setLike] = useState(liked);
+  const dispatch = useDispatch();
+  const likePostResult = useSelector(state => state.likePostResult);
+  const getPostResult = useSelector(state => state.getPostResult);
+
   const [modalVisible, setModalVisible] = useState(false);
+  const [news, setNews] = useState(item);
 
   const onLikeNews = () => {
-    // setLike(pre => !pre);
+    dispatch(likePost({postId: item.id}));
   };
+
+  useEffect(() => {
+    if (likePostResult) {
+      if (likePostResult.success) {
+        dispatch(getPost({postId: item.id}));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [likePostResult]);
+
+  useEffect(() => {
+    if (getPostResult) {
+      if (getPostResult.success && getPostResult.response.data.id === news.id) {
+        setNews(getPostResult.response.data);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getPostResult]);
 
   return (
     <View style={styles.container}>
@@ -44,7 +68,7 @@ const News = ({item}) => {
         setModalVisible={setModalVisible}
         // like={like}
         // setLike={setLike}
-        id={item.id}
+        id={news.id}
       />
       <TouchableHighlight
         style={styles.top}
@@ -52,11 +76,11 @@ const News = ({item}) => {
         underlayColor={COLOR.underlay}
         activeOpacity={0.05}>
         <>
-          <Image source={{uri: item.author.avatar}} style={styles.img} />
+          <Image source={{uri: news.author.avatar}} style={styles.img} />
           <View style={styles.text}>
-            <Text style={styles.name}>{item.author.name}</Text>
+            {news.author && <Text style={styles.name}>{news.author.name}</Text>}
             <Text style={[styles.time, styles.gray]}>
-              {formatDistanceToNow(new Date(item.createdAt).getTime())}
+              {formatDistanceToNow(new Date(news.createdAt).getTime())}
             </Text>
           </View>
           <TouchableOpacity style={styles.dots}>
@@ -71,13 +95,13 @@ const News = ({item}) => {
         onPress={() => setModalVisible(true)}
         underlayColor={COLOR.underlay}
         activeOpacity={0.05}>
-        <Text style={styles.content}>{item.content}</Text>
+        <Text style={styles.content}>{news.content}</Text>
       </TouchableHighlight>
-      {item.medias &&
-        item.medias[0] &&
-        (item.medias[0].type === '0' ? (
+      {news.medias &&
+        news.medias[0] &&
+        (news.medias[0].type === '0' ? (
           <Swiper loop={false} style={styles.wrapper}>
-            {item.medias.map((image, index) => (
+            {news.medias.map((image, index) => (
               <Image
                 source={{uri: image.name}}
                 style={styles.imgContent}
@@ -88,7 +112,7 @@ const News = ({item}) => {
         ) : (
           <VideoPlayer
             video={{
-              uri: item.medias[0].name,
+              uri: news.medias[0].name,
             }}
             videoWidth={1600}
             videoHeight={900}
@@ -100,19 +124,19 @@ const News = ({item}) => {
         underlayColor={COLOR.underlay}
         activeOpacity={0.05}>
         <>
-          <Text style={styles.gray}>{item.numLikes} lượt thích</Text>
-          <Text style={styles.grayb}>{item.numComments} bình luận</Text>
+          <Text style={styles.gray}>{news.numLikes} lượt thích</Text>
+          <Text style={styles.grayb}>{news.numComments} bình luận</Text>
         </>
       </TouchableHighlight>
       <View style={styles.bottom}>
         <TouchableOpacity style={styles.button} onPress={onLikeNews}>
           <Icon
-            name={item.is_liked ? 'thumb-up' : 'thumb-up-outline'}
+            name={news.is_liked ? 'thumb-up' : 'thumb-up-outline'}
             size={15}
-            color={item.is_liked ? COLOR.active : COLOR.grayTime}
+            color={news.is_liked ? COLOR.active : COLOR.grayTime}
             style={styles.icon}
           />
-          <Text style={item.is_liked ? styles.button_like : styles.gray}>
+          <Text style={news.is_liked ? styles.button_like : styles.gray}>
             Thích
           </Text>
         </TouchableOpacity>
