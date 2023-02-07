@@ -25,6 +25,7 @@ import {
   sendRequest,
   setAccept,
 } from './sagas/Friend';
+import {search} from './sagas/Search';
 
 export default function* rootSaga() {
   yield all([
@@ -50,5 +51,6 @@ export default function* rootSaga() {
     sendRequest(),
     setAccept(),
     checkUser(),
+    search(),
   ]);
 }

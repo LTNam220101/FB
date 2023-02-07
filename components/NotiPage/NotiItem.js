@@ -1,4 +1,3 @@
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, {
   Image,
   StyleSheet,
@@ -7,25 +6,61 @@ import React, {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLOR} from '../../styles/colors';
+import {setAccept} from './../ProfilePage/actions';
 
-const NotiItem = ({avatar, name, read, time}) => {
+const NotiItem = ({avatar, name, read, time, type, id}) => {
+  const dispatch = useDispatch();
+
+  const handleAccept = accept => {
+    dispatch(setAccept({id: id, isAccept: accept ? true : false}));
+  };
+
   return (
     <TouchableHighlight>
       <View style={[styles.wrapper, read && styles.read]}>
-        <Image source={avatar} style={styles.img} />
-        <View style={styles.content}>
+        <Image
+          source={avatar}
+          style={type ? styles.img : styles.imgNewFriend}
+        />
+        <View style={type ? styles.content : styles.contentNewFriend}>
           <Text numberOfLines={3} style={styles.fullContent}>
-            <Text style={styles.name}>{name} </Text>
-            đã đăng một liên
-            kếtasdasdjkahskjdahsdkjdahskjfahwsdrfikuewyrtefiugdjkvhbđã đăng một
-            liên kếtasdasdjkahskjdahsdkjdahskjfahwsdrfikuewyrtefiugdjkvhb
+            <Text style={type ? styles.name : styles.nameNewFriend}>
+              {name}{' '}
+            </Text>
+            {type
+              ? `đã đăng một liênkếtasdasdjkahskjdahsdkjdahskjfahwsdrfikuewyrtefiugdjkvhbđã đăng mộtliên kếtasdasdjkahskjdahsdkjdahskjfahwsdrfikuewyrtefiugdjkvhb`
+              : null}
           </Text>
-          <Text style={styles.time}>{time}</Text>
+          {type ? <Text style={styles.time}>{time}</Text> : null}
+          {!type && (
+            <View style={styles.fixToText}>
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                }}
+                onPress={() => handleAccept(true)}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Xác nhận</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{flex: 1}}
+                onPress={() => handleAccept(false)}>
+                <View style={[styles.button, styles.deny]}>
+                  <Text style={[styles.buttonText, styles.textDeny]}>
+                    Từ chối
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
-        <TouchableOpacity style={styles.dots}>
+        {/* <TouchableOpacity style={styles.dots}>
           <Icon name="dots-horizontal" size={25} color={COLOR.grayTime} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </TouchableHighlight>
   );
@@ -40,6 +75,11 @@ const styles = StyleSheet.create({
   read: {
     backgroundColor: COLOR.white,
   },
+  imgNewFriend: {
+    width: 80,
+    height: 80,
+    borderRadius: 35,
+  },
   img: {
     width: 50,
     height: 50,
@@ -50,6 +90,12 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     flex: 1,
   },
+  contentNewFriend: {
+    marginRight: 8,
+    marginLeft: 8,
+    flex: 1,
+    justifyContent: 'center',
+  },
   fullContent: {
     color: COLOR.grayTime,
   },
@@ -57,8 +103,43 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLOR.black,
   },
+  nameNewFriend: {
+    // fontWeight: 'bold',
+    color: COLOR.black,
+    flex: 1,
+    fontSize: 18,
+  },
   time: {
     color: COLOR.grayTime,
+  },
+  fixToText: {
+    width: '100%',
+    flexDirection: 'row',
+  },
+  button: {
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginRight: 10,
+    marginTop: 5,
+    borderRadius: 5,
+    backgroundColor: COLOR.blue,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deny: {
+    backgroundColor: COLOR.grayBackground,
+    buttonText: {
+      color: COLOR.black,
+    },
+  },
+  buttonText: {
+    color: COLOR.white,
+    fontWeight: 'bold',
+  },
+  textDeny: {
+    color: COLOR.black,
   },
 });
 

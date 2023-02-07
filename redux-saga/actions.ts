@@ -26,3 +26,5 @@ export const CHECK_FRIEND = 'CHECK_FRIEND';
 export const CHECK_USER = 'CHECK_USER';
 
 export const CREATE_COMMENT = 'CREATE_COMMENT';
+
+export const SEARCH = 'SEARCH';

@@ -20,6 +20,7 @@ import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {authRegister} from './actions';
 import {AUTH_REGISTER_CLEAR} from './reducers';
+import DeviceInfo from 'react-native-device-info';
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 265) / 527);
@@ -65,6 +66,12 @@ const SignupPage = ({navigation}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [RegisterResult]);
 
+  const handleRegister = async values => {
+    DeviceInfo.getUniqueId().then(uniqueId => {
+      dispatch(authRegister({...values, uuid: uniqueId}));
+    });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -82,7 +89,7 @@ const SignupPage = ({navigation}) => {
             gender: '1',
           }}
           validationSchema={loginValidationSchema}
-          onSubmit={values => dispatch(authRegister(values))}>
+          onSubmit={values => handleRegister(values)}>
           {({
             handleChange,
             handleBlur,

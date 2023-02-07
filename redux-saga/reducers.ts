@@ -23,6 +23,7 @@ import {
   UpdateCoverResult,
   UpdateProfileResult,
 } from '../components/ProfilePage/reducers';
+import {SearchResult} from '../components/SearchPage/reducers';
 import {RegisterResult} from '../components/SignupPage/reducers';
 import {GetAvatarResult} from '../global-actions/getAvatar/reducers';
 import {GetCoverResult} from '../global-actions/getCover/reducers';
@@ -51,6 +52,7 @@ const rootReducer = combineReducers({
   checkUserResult: CheckUserResult,
   updateAvatarResult: UpdateAvatarResult,
   updateCoverResult: UpdateCoverResult,
+  searchResult: SearchResult,
 });
 
 export type State = ReturnType<typeof rootReducer>;

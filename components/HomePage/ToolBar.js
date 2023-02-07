@@ -4,8 +4,10 @@ import CreatePostModal from './CreatePostModal';
 import Avatar from '../Avatar';
 import {COLOR} from './../../styles/colors';
 import {getObject} from '../../utils/storage';
+import {useSelector} from 'react-redux';
 
 const ToolBar = ({inProfile}) => {
+  const checkUserResult = useSelector(state => state.checkUserResult);
   const [modalVisible, setModalVisible] = useState(false);
   const [user, setUser] = useState();
 
@@ -14,6 +16,12 @@ const ToolBar = ({inProfile}) => {
       setUser(user);
     });
   }, []);
+
+  useEffect(() => {
+    getObject('user').then(user => {
+      setUser(user);
+    });
+  }, [checkUserResult]);
 
   return (
     <View style={styles.view}>
@@ -28,9 +36,10 @@ const ToolBar = ({inProfile}) => {
         underlayColor={COLOR.underlay}
         activeOpacity={0.05}>
         <Text style={{color: COLOR.black}}>
-          {inProfile
+          {/* {inProfile
             ? 'Viết gì đó cho bạn bè'
-            : 'Ngày hôm nay của bạn thế nào?'}
+            : 'Ngày hôm nay của bạn thế nào?'} */}
+          Ngày hôm nay của bạn thế nào?
         </Text>
       </TouchableHighlight>
       {/* <TouchableOpacity style={styles.button}>

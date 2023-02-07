@@ -6,6 +6,11 @@ import ToolBar from './ToolBar';
 import News from '../News/News';
 import {getAllPosts} from '../News/actions';
 import {getObject} from '../../utils/storage';
+// import io from 'socket.io-client';
+
+// const socket = io(`http://192.168.1.5:8000/user`, {
+//   transports: ['websocket'],
+// });
 
 class HomePage extends Component {
   skip = 0;
@@ -17,9 +22,15 @@ class HomePage extends Component {
     super(props);
   }
 
+  // notify = data => {
+  //   console.log(data);
+  // };
   componentDidMount() {
     getObject('user').then(user => {
       this.props.getAllPosts({take: 2, skip: this.skip});
+      // socket.on(`${user.id}`, data => {
+      //   this.notify(data);
+      // });
     });
   }
 

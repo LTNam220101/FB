@@ -5,42 +5,61 @@ import React, {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import NotiItem from './NotiItem';
-import {useDispatch} from 'react-redux';
-import {authLogout} from '../LoginPage/actions';
-import {AUTH_LOGIN_CLEAR} from '../LoginPage/reducers';
+import {useDispatch, useSelector} from 'react-redux';
 import {COLOR} from '../../styles/colors';
+import {getListFriends, getRequests} from '../ProfilePage/actions';
 
 const NotiPage = ({setIsSignIn}) => {
   const dispatch = useDispatch();
+  const getRequestsResult = useSelector(state => state.getRequestsResult);
+  const setAcceptResult = useSelector(state => state.setAcceptResult);
 
-  const handleLogout = () => {
-    dispatch(authLogout());
-    dispatch({type: AUTH_LOGIN_CLEAR});
-    setIsSignIn(false);
-  };
+  useEffect(() => {
+    dispatch(getRequests());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (setAcceptResult) {
+      if (setAcceptResult.success) {
+        dispatch(getRequests());
+        dispatch(getListFriends());
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setAcceptResult]);
+
+  // const handleLogout = () => {
+  //   dispatch(authLogout());
+  //   dispatch({type: AUTH_LOGIN_CLEAR});
+  //   setIsSignIn(false);
+  // };
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: COLOR.white}}>
       <View style={styles.header}>
         <Text style={styles.text}>Thông báo</Text>
-        <TouchableOpacity style={styles.button} onPress={handleLogout}>
+        <TouchableOpacity style={styles.button}>
           <Icon name="search" size={20} color={COLOR.black} />
         </TouchableOpacity>
       </View>
+      {getRequestsResult &&
+        getRequestsResult.response &&
+        getRequestsResult.response.data.map(request => (
+          <NotiItem
+            type={0}
+            avatar={{uri: request.avatar}}
+            name={request.name}
+            read
+            id={request.id}
+            key={request.id}
+          />
+        ))}
       <NotiItem
-        avatar={require('../../assets/avatar.jpg')}
-        name="Lương Thái Nam"
-        time="25p"
-      />
-      <NotiItem
-        avatar={require('../../assets/avatar.jpg')}
-        name="Lương Thái Nam"
-        read
-        time="25p"
-      />
-      <NotiItem
+        type={1}
         avatar={require('../../assets/avatar.jpg')}
         name="Lương Thái Nam"
         read

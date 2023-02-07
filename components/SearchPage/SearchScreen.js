@@ -4,13 +4,37 @@ import React, {
   TouchableOpacity,
   View,
   Modal,
+  Text,
+  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SearchItem from './SearchItem';
 import {Searchbar} from 'react-native-paper';
 import {COLOR} from '../../styles/colors';
+import {useDispatch, useSelector} from 'react-redux';
+import {search} from './actions';
+import {SEARCH_CLEAR} from './reducers';
+import News from '../News/News';
 
 const SearchScreen = ({setState}) => {
+  const dispatch = useDispatch();
+  const searchResult = useSelector(state => state.searchResult);
+
+  const onChangeSearch = query => {
+    if (query) {
+      dispatch(
+        search({
+          keyword: query,
+          searchType: 0,
+          skip: 0,
+          take: 10,
+        }),
+      );
+    } else {
+      dispatch({type: SEARCH_CLEAR});
+    }
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -23,38 +47,33 @@ const SearchScreen = ({setState}) => {
           <TouchableOpacity style={styles.button} onPress={() => setState(0)}>
             <Icon name="arrow-back-outline" size={30} color={COLOR.blue} />
           </TouchableOpacity>
-          <Searchbar placeholder="Tìm kiếm" style={styles.input} />
+          <Searchbar
+            placeholder="Tìm kiếm"
+            onChangeText={onChangeSearch}
+            style={styles.input}
+          />
         </View>
-        <SearchItem
-          avatar={require('../../assets/avatar.jpg')}
-          content="Đội SVTN Trường CNTT&TT"
-          notiContent="1 thông báo mới"
-        />
-        <SearchItem
-          avatar={require('../../assets/avatar.jpg')}
-          content="ĐTN-HSV Trường CNTT&TT"
-          notiContent="2 thông báo mới"
-        />
-        <SearchItem
-          avatar={require('../../assets/avatar.jpg')}
-          content="Đội SVTN Trường CNTT&TT"
-          notiContent="3 thông báo mới"
-        />
-        <SearchItem
-          avatar={require('../../assets/avatar.jpg')}
-          content="ĐTN-HSV Trường CNTT&TT"
-          notiContent="1 thông báo mới"
-        />
-        <SearchItem
-          avatar={require('../../assets/avatar.jpg')}
-          content="Đội SVTN Trường CNTT&TT"
-          notiContent="2 thông báo mới"
-        />
-        <SearchItem
-          avatar={require('../../assets/avatar.jpg')}
-          content="ĐTN-HSV Trường CNTT&TT"
-          notiContent="3 thông báo mới"
-        />
+        {searchResult && searchResult.response.data.users.length ? (
+          <Text style={styles.text2}>Người dùng</Text>
+        ) : null}
+        {searchResult && searchResult.response.data.users.length
+          ? searchResult.response.data.users.map(user => (
+              <SearchItem
+                key={user.id}
+                avatar={{uri: user.avatar}}
+                content={user.name}
+                notiContent=""
+              />
+            ))
+          : null}
+        {searchResult && searchResult.response.data.posts.length ? (
+          <Text style={styles.text2}>Bài viết</Text>
+        ) : null}
+        {searchResult && searchResult.response.data.posts.length
+          ? searchResult.response.data.posts.map(user => (
+              <News item={user} key={user.id} />
+            ))
+          : null}
       </ScrollView>
     </Modal>
   );
@@ -86,6 +105,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontWeight: 'bold',
     fontSize: 25,
+    color: COLOR.black,
+  },
+  text2: {
+    marginLeft: 8,
+    fontWeight: 'bold',
+    fontSize: 18,
     color: COLOR.black,
   },
   button: {

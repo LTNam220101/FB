@@ -25,6 +25,7 @@ import {getObject} from '../../utils/storage';
 const CreatePostModal = ({modalVisible, setModalVisible}) => {
   const dispatch = useDispatch();
   const createPostResult = useSelector(state => state.createPostResult);
+  const checkUserResult = useSelector(state => state.checkUserResult);
   const [user, setUser] = useState();
 
   const [text, setText] = useState(undefined);
@@ -37,6 +38,15 @@ const CreatePostModal = ({modalVisible, setModalVisible}) => {
       setUser(user);
     });
   }, []);
+
+  useEffect(() => {
+    if (checkUserResult) {
+      getObject('user').then(user => {
+        setUser(user);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkUserResult]);
 
   useEffect(() => {
     if (createPostResult) {

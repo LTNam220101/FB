@@ -15,9 +15,10 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
 import {getObject, setObject} from '../../utils/storage';
-import {checkUser, updateAvatar} from '../ProfilePage/actions';
+import {checkUser, getListFriends, updateAvatar} from '../ProfilePage/actions';
 import {updateCover} from './../ProfilePage/actions';
 import Camera from 'react-native-vector-icons/Entypo';
+import ListFriend from './../ListFriend/ListFriend';
 
 const width = (Dimensions.get('window').width - 34) / 3;
 
@@ -31,47 +32,47 @@ const Friend = ({avatar, name, id}) => {
 };
 
 const Friends = () => {
+  const dispatch = useDispatch();
+  const getListFriendsResult = useSelector(state => state.getListFriendsResult);
+  const [openListFriend, setOpenListFriend] = useState(false);
+
+  useEffect(() => {
+    dispatch(getListFriends());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View style={styles.friends}>
+      <ListFriend setEdit={setOpenListFriend} edit={openListFriend} />
       <Text style={styles.text}>Bạn bè</Text>
-      <Text style={styles.number}>1024 bạn</Text>
+      {getListFriendsResult && (
+        <Text style={styles.number}>
+          {getListFriendsResult.response.data.length
+            ? getListFriendsResult.response.data.length
+            : 'Chưa có'}{' '}
+          bạn
+        </Text>
+      )}
       <View style={styles.grid}>
-        <Friend
-          avatar={require('../../assets/avatar.jpg')}
-          name={'Nam Luong'}
-          id={1}
-        />
-        <Friend
-          avatar={require('../../assets/avatar.jpg')}
-          name={'Nam Luong'}
-          id={1}
-        />
-        <Friend
-          avatar={require('../../assets/avatar.jpg')}
-          name={'Nam Luong'}
-          id={1}
-        />
-        <Friend
-          avatar={require('../../assets/avatar.jpg')}
-          name={'Nam Luong'}
-          id={1}
-        />
-        <Friend
-          avatar={require('../../assets/avatar.jpg')}
-          name={'Nam Luong'}
-          id={1}
-        />
-        <Friend
-          avatar={require('../../assets/avatar.jpg')}
-          name={'Nam Luong'}
-          id={1}
-        />
+        {getListFriendsResult &&
+          getListFriendsResult.response.data.slice(0, 6).map(friend => {
+            return (
+              <Friend
+                key={friend.id}
+                avatar={{uri: friend.avatar}}
+                name={friend.name}
+                id={friend.id}
+              />
+            );
+          })}
       </View>
-      <Button
-        // onPress={() => navigation.navigate('Signup')}
-        color={COLOR.gray}
-        title="Xem tất cả bạn bè"
-      />
+      {getListFriendsResult && getListFriendsResult.response.data.length ? (
+        <Button
+          onPress={() => setOpenListFriend(true)}
+          color={COLOR.gray}
+          title="Xem tất cả bạn bè"
+        />
+      ) : null}
     </View>
   );
 };

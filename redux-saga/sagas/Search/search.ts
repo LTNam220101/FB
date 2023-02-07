@@ -1,17 +1,17 @@
 import axios from '../BaseApi';
 import {put, takeLatest, call} from 'redux-saga/effects';
 import {Request} from '../../../interfaces';
-import {DELETE_POST} from '../../actions';
+import {SEARCH} from '../../actions';
 
-const deletePostUrl = `/posts/delete-post`;
+const searchUrl = `/search/search`;
 
-function deletePost(payload: any) {
-  return axios.post(deletePostUrl, payload);
+function search(payload) {
+  return axios.post(searchUrl, payload);
 }
 
-function* doDeletePost(request: Request<Record<string, unknown>>): any {
+function* doSearch(request: Request<Record<string, unknown>>): any {
   try {
-    const response = yield call(deletePost, request.payload);
+    const response = yield call(search, request.payload);
     yield put({
       type: request.response?.success?.type,
       payload: {
@@ -34,6 +34,6 @@ function* doDeletePost(request: Request<Record<string, unknown>>): any {
   }
 }
 
-export default function* watchDeletePost() {
-  yield takeLatest(DELETE_POST, doDeletePost);
+export default function* watchSearch() {
+  yield takeLatest(SEARCH, doSearch);
 }

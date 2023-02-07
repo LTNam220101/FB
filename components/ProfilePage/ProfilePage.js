@@ -1,9 +1,9 @@
-import React, {useState, useEffect, Component} from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import React, {Component} from 'react';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
 import {COLOR} from '../../styles/colors';
 import ProfileHeader from '../ProfileHeader/ProfileHeader';
 import {getObject} from '../../utils/storage';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {connect} from 'react-redux';
 import {getUserPosts} from './actions';
 import News from '../News/News';
 
@@ -12,6 +12,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLOR.backgroundColor,
   },
+  empty: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: COLOR.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {},
 });
 
 class ProfilePage extends Component {
@@ -31,6 +39,13 @@ class ProfilePage extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    if (
+      this.props.checkUserResult !== nextProps.checkUserResult &&
+      nextProps.checkUserResult
+    ) {
+      this.handleRefresh();
+      return true;
+    }
     if (
       this.props.getUserPostsResult !== nextProps.getUserPostsResult &&
       nextProps.getUserPostsResult
@@ -84,6 +99,11 @@ class ProfilePage extends Component {
             renderItem={this.renderItem}
             keyExtractor={item => item.id}
             ListHeaderComponent={ProfileHeader}
+            ListEmptyComponent={
+              <View style={styles.empty}>
+                <Text style={styles.emptyText}>Chưa có bài viết nào</Text>
+              </View>
+            }
           />
         )}
       </View>
@@ -93,6 +113,7 @@ class ProfilePage extends Component {
 
 const mapStateToProps = state => ({
   getUserPostsResult: state.getUserPostsResult,
+  checkUserResult: state.checkUserResult,
 });
 
 const mapDispatchToProps = {
